@@ -674,7 +674,7 @@ export default function Blogs({match}){
                             <IconButton aria-label="Dislike" id={"dislike_button_" + tier_0_comment.comment_id} className={classes.like_button} onClick={handleLikeClick(tier_0_comment.comment_id, -1)}>
                               <ThumbDown/>
                             </IconButton>
-                            <Button variant="contained" onClick={handleReplyButtonClick(tier_0_comment.comment_id)}>REPLY</Button>
+                            <Button variant="contained" className={classes.bottom_button} onClick={handleReplyButtonClick(tier_0_comment.comment_id)}>REPLY</Button>
                             { current_user_username == tier_0_comment.author.username && (
                               <span>
                                 <Button variant="contained" className={classes.bottom_button} onClick={handleEditCommentClick(tier_0_comment.comment_id)}>EDIT</Button>
@@ -777,13 +777,13 @@ export default function Blogs({match}){
                                 <IconButton aria-label="Dislike" id={"dislike_button_" + tier_1_comment.comment_id} className={classes.like_button} onClick={handleLikeClick(tier_1_comment.comment_id, -1)}>
                                   <ThumbDown/>
                                 </IconButton>
-                                  <Button variant="contained" onClick={handleReplyButtonClick(tier_1_comment.comment_id)}>REPLY</Button>
-                                  { current_user_username == tier_1_comment.author.username &&
-                                    <Button variant="contained" onClick={handleEditCommentClick(tier_1_comment.comment_id)}>EDIT</Button>
-                                  }
-                                  { current_user_username == tier_1_comment.author.username &&
-                                    <Button variant="contained" onClick={handleDeleteComment(tier_1_comment.comment_id)}>DELETE</Button>
-                                  }
+                                  <Button variant="contained" className={classes.bottom_button} onClick={handleReplyButtonClick(tier_1_comment.comment_id)}>REPLY</Button>
+                                  { current_user_username == tier_1_comment.author.username && (
+                                    <span>
+                                      <Button variant="contained" className={classes.bottom_button} onClick={handleEditCommentClick(tier_1_comment.comment_id)}>EDIT</Button>
+                                      <Button variant="contained" onClick={handleDeleteComment(tier_1_comment.comment_id)}>DELETE</Button>
+                                    </span>
+                                  )}
                               </CardActions>
                             </Card>
 
@@ -852,7 +852,7 @@ export default function Blogs({match}){
 
 
 
-                            {tier_1_comment.replies.map((tier_2_comment) => {
+                            {tier_1_comment.replies.map((tier_2_comment, tier_2_i) => {
                               return <div key={"key_" + tier_2_comment.comment_id}>
                                 {/** Card for displaying a comment */}
                                 <Card id={"comment_" + tier_2_comment.comment_id} className={classes.tier_2}>
@@ -882,13 +882,13 @@ export default function Blogs({match}){
                                     <IconButton aria-label="Dislike" id={"dislike_button_" + tier_2_comment.comment_id} className={classes.like_button} onClick={handleLikeClick(tier_1_comment.comment_id, -1)}>
                                       <ThumbDown/>
                                     </IconButton>
-                                      <Button variant="contained" onClick={handleReplyButtonClick(tier_2_comment.comment_id)}>REPLY</Button>
-                                      { current_user_username == tier_1_comment.author.username &&
-                                        <Button variant="contained" onClick={handleEditCommentClick(tier_2_comment.comment_id)}>EDIT</Button>
-                                      }
-                                      { current_user_username == tier_1_comment.author.username &&
+                                    <Button variant="contained" className={classes.bottom_button} onClick={handleReplyButtonClick(tier_2_comment.comment_id)}>REPLY</Button>
+                                    { current_user_username == tier_2_comment.author.username && (
+                                      <span>
+                                        <Button variant="contained" className={classes.bottom_button} onClick={handleEditCommentClick(tier_2_comment.comment_id)}>EDIT</Button>
                                         <Button variant="contained" onClick={handleDeleteComment(tier_2_comment.comment_id)}>DELETE</Button>
-                                      }
+                                      </span>
+                                    )}
                                   </CardActions>
                                 </Card>
 
