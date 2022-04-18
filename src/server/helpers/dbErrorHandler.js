@@ -4,10 +4,10 @@
  * Get unique error field name
  */
 const getUniqueErrorMessage = (err) => {
-    let output
+    let output = "";
     try {
         let field_name = err.message.split("{")[1].split(":")[0];
-        let output = field_name.charAt(0).toUpperCase() + field_name.slice(1) + ' already exists'
+        output = field_name.charAt(0).toUpperCase() + field_name.slice(1) + ' already exists'
     } catch (ex) {
         output = 'Unique field already exists'
     }
