@@ -4,12 +4,19 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogActions from '@material-ui/core/DialogActions'
+import { create } from './api-user'
 
 const useStyles = makeStyles(theme => ({
     page_container: {
         width: "80%",
         margin: "auto",
-        backgroundColor: "lightgray"
+        backgroundColor: "lightgray",
+        minHeight: "100vh"
     },
     register_form: {
         width: "70%",
@@ -41,7 +48,39 @@ const useStyles = makeStyles(theme => ({
 
 export default function Register() {
     var classes = useStyles();
-    var error = "";
+
+    const [user_input, setInput] = useState({
+        username: "",
+        email: "",
+        password: "",
+        dialog_open: false,
+        error: ""
+    })
+
+    const handleInputTextChange = property => event => {
+        setInput({ ...user_input, [property]: event.target.value });
+    }
+
+    const handleRegisterButtonSubmit = () => {
+        const new_user = {
+            username: user_input.username || undefined,
+            email: user_input.email || undefined,
+            password: user_input.password || undefined
+        }
+
+        create(new_user).then((data) => {
+            if (data.error) {
+                setInput({ ...user_input, error: data.error });
+            }
+            else {
+                setInput({ ...user_input, dialog_open: true });
+            }
+        })
+    }
+
+    const signInRedirect = () => {
+        window.href="/signin";
+    }
 
     return (
         <Card className={classes.page_container}>
@@ -56,6 +95,8 @@ export default function Register() {
                                 label="Username"
                                 variant="outlined"
                                 className={classes.form_input}
+                                value={user_input.username}
+                                onChange={handleInputTextChange("username")}
                             />
                             <TextField
                                 id="email_input"
@@ -63,6 +104,8 @@ export default function Register() {
                                 label="Email Address"
                                 variant="outlined"
                                 className={classes.form_input}
+                                value={user_input.email}
+                                onChange={handleInputTextChange("email")}
                             />
                             <TextField
                                 id="password_input"
@@ -70,16 +113,37 @@ export default function Register() {
                                 label="Password"
                                 variant="outlined"
                                 className={classes.form_input}
+                                value={user_input.password}
+                                onChange={handleInputTextChange("password")}
                             />
-                            { error !== "" && (
-                                <Typography variant="body2" className={classes.error_message}>{error}</Typography>
+                            { user_input.error && (
+                                <Typography variant="body2" className={classes.error_message}>{user_input.error}</Typography>
                             )}
                             <div className={classes.submit_button_container}>
-                                <Button variant="contained">REGISTER</Button>
+                                <Button variant="contained" onClick={handleRegisterButtonSubmit}>REGISTER</Button>
                             </div>
                         </div>
                     </CardContent>
                 </Card>
+
+                <Dialog
+                    open={dialog_open}
+                    disableBackdropClick={true}
+                    aria-labelledby="alert_dialog_title"
+                    aria-describedby="alert_dialog_description"
+                >
+                    <DialogTitle id="alert_dialog_title">Account Created</DialogTitle>
+                    <DialogContent>
+                    <DialogContentText id="alert_dialog_description">
+                        Your new account has successfully been registered
+                    </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={signInRedirect}>
+                            Sign In
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
             </div>
         </Card>
