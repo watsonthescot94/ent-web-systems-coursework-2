@@ -477,7 +477,7 @@ export default function Blogs({match}){
 
   const handleSubmitReplyClick = id => event => {
     event.stopPropagation();
-    const comment_text = document.getElementById("reply_box_" + id).value.trim().replace(/(<([^>]+)>)/gi, "");
+    const comment_text = document.getElementById("reply_input_" + id).value.trim().replace(/(<([^>]+)>)/gi, "");
     var success = true;
 
     if (success) {
