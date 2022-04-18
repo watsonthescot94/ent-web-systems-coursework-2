@@ -3,8 +3,7 @@ import mongoose from 'mongoose'
 const Tier3CommentSchema = new mongoose.Schema({
     comment_id: {
         type: String,
-        trim: true,
-        unique: true
+        trim: true
     },
     author: {
         user_id: {
@@ -37,8 +36,7 @@ const Tier3CommentSchema = new mongoose.Schema({
 const Tier2CommentSchema = new mongoose.Schema({
     comment_id: {
         type: String,
-        trim: true,
-        unique: true
+        trim: true
     },
     author: {
         user_id: {
@@ -74,8 +72,7 @@ const Tier2CommentSchema = new mongoose.Schema({
 const Tier1CommentSchema = new mongoose.Schema({
     comment_id: {
         type: String,
-        trim: true,
-        unique: true
+        trim: true
     },
     author: {
         user_id: {
