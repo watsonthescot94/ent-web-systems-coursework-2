@@ -724,7 +724,7 @@ export default function Blogs({match}){
                             <FormControl variant="standard" fullWidth>
                               <OutlinedInput
                                 id={"reply_input_" + tier_0_comment.comment_id}
-                                onChange={handleReplyTextChange(tier_0_comment.comment_id)}
+                                onChange={handleCommentInputTextChange("reply_length_counter_" + tier_0_comment.comment_id)}
                                 aria-describedby={"reply_length_counter_" + tier_0_comment.comment_id}
                                 multiline
                                 inputProps={{"maxLength":comment_max_length}}
@@ -796,7 +796,7 @@ export default function Blogs({match}){
                                 <FormControl variant="standard" fullWidth>
                                   <OutlinedInput
                                     id={"edit_comment_box_" + tier_1_comment.comment_id}
-                                    onChange={handleEditTextChange(tier_1_comment.comment_id)}
+                                    onChange={handleCommentInputTextChange("edit_comment_length_counter_" + tier_1_comment.comment_id)}
                                     aria-describedby={"edit_comment_length_counter_" + tier_1_comment.comment_id}
                                     multiline
                                     inputProps={{"maxLength":comment_max_length}}
@@ -827,7 +827,7 @@ export default function Blogs({match}){
                                 <FormControl variant="standard" fullWidth>
                                     <OutlinedInput
                                           id={"reply_input_" + tier_1_comment.comment_id}
-                                          onChange={handleReplyTextChange(tier_1_comment.comment_id)}
+                                          onChange={handleCommentInputTextChange("reply_length_counter_" + tier_1_comment.comment_id)}
                                           aria-describedby={"reply_length_counter_" + tier_1_comment.comment_id}
                                           multiline
                                           inputProps={{"maxLength":comment_max_length}}
