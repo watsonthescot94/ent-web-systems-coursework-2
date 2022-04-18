@@ -392,7 +392,9 @@ export default function Blogs({match}){
   }
 
   var logged_in = true;
-  var current_user_username = "colin_456";
+  var current_user_username = "ben_ten";
+  var current_user_id = "1493504";
+  var current_user_avatar = "avatar_3.jpg";
 
   const handleLikeClick = (id, like) => event => {
     console.log("like: " + like);
@@ -480,67 +482,41 @@ export default function Blogs({match}){
     const comment_text = document.getElementById("reply_input_" + id).value.trim().replace(/(<([^>]+)>)/gi, "");
     var success = true;
 
+    var new_comment = {
+      "comment_id": uuidv4(),
+        "author": {
+          "user_id": current_user_id,
+          "username": current_user_username,
+        },
+        "replying_to": {
+          "user_id": blog_post.comments[tier_0_i].author.user_id,
+          "username": blog_post.comments[tier_0_i].author.username
+        },
+        "text": comment_text,
+        "posting_time": Date.now(),
+        "avatar": current_user_avatar,
+        "likes": 0
+    }
+
     if (success) {
       if (comment_text.length > 0) {
         for (const tier_0_i in blog_post.comments) {
           if (blog_post.comments[tier_0_i].comment_id == id) {
-            blog_post.comments[tier_0_i].replies.push({
-              "comment_id": uuidv4(),
-                "author": {
-                  "user_id": current_user_id,
-                  "username": current_user_username,
-                },
-                "replying_to": {
-                  "user_id": blog_post.comments[tier_0_i].author.user_id,
-                  "username": blog_post.comments[tier_0_i].author.username
-                },
-                "text": comment_text,
-                "posting_time": Date.now(),
-                "avatar": current_user_avatar,
-                "likes": 0,
-                "replies": []
-            })
+            new_comment.replies = [];
+            blog_post.comments[tier_0_i].replies.push(new_comment);
             break;
           }
           else {
             for (const tier_1_i in blog_post.comments[tier_0_i].replies) {
               if (blog_post.comments[tier_0_i].replies[tier_1_i].comment_id == id) {
-                blog_post.comments[tier_0_i].replies[tier_1_i].replies.push({
-                  "comment_id": uuidv4(),
-                    "author": {
-                      "user_id": current_user_id,
-                      "username": current_user_username,
-                    },
-                    "replying_to": {
-                      "user_id": blog_post.comments[tier_0_i].replies[tier_1_i].author.user_id,
-                      "username": blog_post.comments[tier_0_i].replies[tier_1_i].author.username
-                    },
-                    "text": comment_text,
-                    "posting_time": Date.now(),
-                    "avatar": current_user_avatar,
-                    "likes": 0,
-                    "replies": []
-                })
+                new_comment.replies = [];
+                blog_post.comments[tier_0_i].replies[tier_1_i].replies.push(new_comment);
                 break;
               }
               else {
                 for (const tier_2_i in blog_post.comments[tier_0_i].replies[tier_1_i].replies) {
                   if (blog_post.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id == id) {
-                    blog_post.comments[tier_0_i].replies[tier_1_i].replies.push({
-                      "comment_id": uuidv4(),
-                        "author": {
-                          "user_id": current_user_id,
-                          "username": current_user_username,
-                        },
-                        "replying_to": {
-                          "user_id": blog_post.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].author.user_id,
-                          "username": blog_post.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].author.username
-                        },
-                        "text": comment_text,
-                        "posting_time": Date.now(),
-                        "avatar": current_user_avatar,
-                        "likes": 0
-                    })
+                    blog_post.comments[tier_0_i].replies[tier_1_i].replies.push(new_comment);
                     break;
                   }
                 }
@@ -550,15 +526,16 @@ export default function Blogs({match}){
         }
 
         like_tracker.push({
-          "id": "311111118",
+          "id": new_comment.comment_id,
           "already_liked": false,
           "already_disliked": false
         })
-        document.getElementById("reply_box_" + id).value = "";
-        document.getElementById("comment_length_counter_" + id).innerHTML = "0/1000";
 
-        handleSetComments();
-        hideReplyCard(id);
+        document.getElementById("reply_input_" + id).value = "";
+        document.getElementById("reply_length_counter_" + id).innerHTML = "0/1000";
+        document.getElementById("write_reply_card_" + id).style.display = "none";
+
+        handleSetBlogPost();
       }
     }
   }

@@ -7,7 +7,7 @@ const Tier3CommentSchema = new mongoose.Schema({
     },
     author: {
         user_id: {
-            type: Number,
+            type: String,
             trim: true
         },
         user_username: {
