@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   list_container: {
     backgroundColor: "white"
   },
-  recent_post_container: {
+  recent_post_title: {
     textDecoration: "none",
     color: "gray"
   }
