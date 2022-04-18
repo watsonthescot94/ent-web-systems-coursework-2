@@ -488,10 +488,6 @@ export default function Blogs({match}){
           "user_id": current_user_id,
           "username": current_user_username,
         },
-        "replying_to": {
-          "user_id": blog_post.comments[tier_0_i].author.user_id,
-          "username": blog_post.comments[tier_0_i].author.username
-        },
         "text": comment_text,
         "posting_time": Date.now(),
         "avatar": current_user_avatar,
@@ -503,6 +499,10 @@ export default function Blogs({match}){
         for (const tier_0_i in blog_post.comments) {
           if (blog_post.comments[tier_0_i].comment_id == id) {
             new_comment.replies = [];
+            new_comment.replying_to = {
+              "user_id": blog_post.comments[tier_0_i].author.user_id,
+              "username": blog_post.comments[tier_0_i].author.username
+            }
             blog_post.comments[tier_0_i].replies.push(new_comment);
             break;
           }
@@ -510,12 +510,20 @@ export default function Blogs({match}){
             for (const tier_1_i in blog_post.comments[tier_0_i].replies) {
               if (blog_post.comments[tier_0_i].replies[tier_1_i].comment_id == id) {
                 new_comment.replies = [];
+                new_comment.replying_to = {
+                  "user_id": blog_post.comments[tier_1_i].author.user_id,
+                  "username": blog_post.comments[tier_1_i].author.username
+                }
                 blog_post.comments[tier_0_i].replies[tier_1_i].replies.push(new_comment);
                 break;
               }
               else {
                 for (const tier_2_i in blog_post.comments[tier_0_i].replies[tier_1_i].replies) {
                   if (blog_post.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id == id) {
+                    new_comment.replying_to = {
+                      "user_id": blog_post.comments[tier_2_i].author.user_id,
+                      "username": blog_post.comments[tier_2_i].author.username
+                    }
                     blog_post.comments[tier_0_i].replies[tier_1_i].replies.push(new_comment);
                     break;
                   }
