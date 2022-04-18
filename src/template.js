@@ -11,7 +11,7 @@ export default ({markup, css}) => {
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400">
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         </head>
-        <body style="background-color: lightblue">
+        <body style="background-color: lightblue; overflow: scroll">
           <div id="root">${markup}</div>
           <style id="jss-server-side">${css}</style>
           <script type="text/javascript" src="/dist/bundle.js"></script>

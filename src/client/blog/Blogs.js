@@ -10,6 +10,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import ListItemText from '@material-ui/core/ListItemText'
 import { Link } from 'react-router-dom'
+import MenuItem from '@material-ui/core/MenuItem'
 
 const useStyles = makeStyles(theme => ({
   page_container: {
@@ -40,6 +41,19 @@ const useStyles = makeStyles(theme => ({
   recent_post_title: {
     textDecoration: "none",
     color: "gray"
+  },
+  comments_section: {
+    width: "100%",
+    padding: "10px",
+    backgroundColor: "white",
+    boxSizing: "border-box",
+    marginTop: "20px"
+  },
+  comments_section_header_sort_container: {
+    justifyContent: "space-between",
+    display: "flex",
+    flexDirection: "row",
+    marginBottom: "10px"
   }
 }))
 
@@ -59,7 +73,7 @@ function getBlogPostingDate(time) {
  */
 function getMostRecentPosts(posts) {
   console.log("getMostRecentPosts()");
-  posts.sort(sortRecentPosts);
+  posts.sort(sortNewestToOldest);
   if (posts.length < 10) {
     return posts;
   }
@@ -74,11 +88,41 @@ function getMostRecentPosts(posts) {
  * @param {*} post_b Second post to be compared
  * @returns Indication of array position change
  */
-function sortRecentPosts(post_a, post_b) {
-  if ( post_a.posting_time > post_b.posting_time){
+function sortNewestToOldest(post_a, post_b) {
+  if ( a.posting_time > b.posting_time){
     return -1;
   }
-  if ( post_a.posting_time < post_b.posting_time){
+  if ( a.posting_time < b.posting_time){
+    return 1;
+  }
+  return 0;
+}
+
+function sortOldestToNewest(a, b) {
+  if ( a.posting_time < b.posting_time){
+    return -1;
+  }
+  if ( a.posting_time > b.posting_time){
+    return 1;
+  }
+  return 0;
+}
+
+function sortMostLikedToLeastLiked(a, b) {
+  if ( a.likes < b.likes){
+    return -1;
+  }
+  if ( a.likes > b.likes){
+    return 1;
+  }
+  return 0;
+}
+
+function sortLeastLikedToMostLiked(a, b) {
+  if ( a.likes > b.likes){
+    return -1;
+  }
+  if ( a.likes < b.likes){
     return 1;
   }
   return 0;
@@ -120,6 +164,33 @@ export default function Blogs({match}){
     }
   }, [match.params.blog_id])
 
+  const [sort_comments_value, setSortCommentsValue] = useState("most liked - least liked");
+
+  /**
+   * Method for sorting comments
+   * @param {*} event Select where value was changed
+   */
+  const sortComments = event => {
+    setSortCommentsValue(event.target.value);
+    switch (event.target.value) {
+      case "newest - oldest":
+        blog_post.comments.sort(sortNewestToOldest);
+        break;
+      case "oldest - newest":
+        blog_post.comments.sort(sortOldestToNewest);
+        break;
+      case "least liked - most liked":
+        blog_post.comments.sort(sortLeastLikedToMostLiked);
+        break;
+      default:
+        blog_post.comments.sort(sortMostLikedToLeastLiked);
+    }
+
+    var blog_post_copy = [];
+    blog_post_copy.push(blog_post);
+    setBlogPost(blog_post_copy[0]);
+  }
+
     return (
       <Card className={classes.page_container}>
 
@@ -137,6 +208,29 @@ export default function Blogs({match}){
                 <Typography variant="body1">{"Posted by " + blog_post.author}</Typography>
                 <br/>
                 <Typography variant="body2">{blog_post.content.text}</Typography>
+              </CardContent>
+            </Card>
+
+            <Card className={classes.comments_section}>
+              <CardContent>
+                <div className={classes.comments_section_header_sort_container}>
+                  <Typography variant="h6">Comments</Typography>
+                  <FormControl className={classes.sort_comments_form_control} variant="outlined">
+                    <InputLabel id="demo-simple-select-label">Sort Comments</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={sort_comments_value}
+                      label="Sort Comments"
+                      onChange={sortComments}
+                    >
+                      <MenuItem value="newest - oldest">Newest - Oldest</MenuItem>
+                      <MenuItem value="oldest - newest">Oldest - Newest</MenuItem>
+                      <MenuItem value="most liked - least liked">Most Liked - Least Liked</MenuItem>
+                      <MenuItem value="least liked - most liked">Least Liked - Most Liked</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
               </CardContent>
             </Card>
           </div>
