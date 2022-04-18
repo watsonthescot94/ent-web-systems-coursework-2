@@ -21,6 +21,11 @@ import IconButton from '@material-ui/core/IconButton'
 import ThumbUp from '@material-ui/icons/ThumbUp'
 import ThumbDown from '@material-ui/icons/ThumbDown'
 import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogActions from '@material-ui/core/DialogActions'
 
 const useStyles = makeStyles(theme => ({
   page_container: {
@@ -120,6 +125,13 @@ function createLikeTracker(comments) {
       }
     }
   }
+}
+
+/**
+ * Method for redirecting the user to the sign in page
+ */
+function signInRedirect() {
+  window.location.href = "/signin";
 }
 
 /**
@@ -255,6 +267,35 @@ function sortLeastLikedToMostLiked(a, b) {
   return "1 sec ago";
 }
 
+/**
+ * Method for finding a comment from its id
+ * @param {} comments Array of comments
+ * @param {*} id ID of comment to be found
+ * @returns Comment
+ */
+function findComment(comments, id) {
+  for (const tier_0_i in comments) {
+    if (comments[tier_0_i].comment_id == id) {
+      return comments[tier_0_i];
+    }
+    else {
+      for (const tier_1_i in comments[tier_0_i].replies) {
+        if (comments[tier_0_i].replies[tier_1_i].comment_id == id) {
+          return comments[tier_0_i].replies[tier_1_i];
+        }
+        else {
+          for (const tier_2_i in comments[tier_0_i].replies[tier_1_i].replies) {
+            if (comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id == id) {
+              return comments[tier_0_i].replies[tier_1_i].replies[tier_2_i];
+            }
+          }
+        }
+      }
+    }
+  }
+  return -1
+}
+
 export default function Blogs({match}){
   const classes = useStyles()
   const [blog_post, setBlogPost] = useState({ "content": {}, "comments": []});
@@ -288,6 +329,19 @@ export default function Blogs({match}){
     }
   }, [match.params.blog_id])
 
+  const handleSetBlogPost = () => {
+    var blog_post_copy = [];
+    blog_post_copy.push(blog_post);
+    setBlogPost(blog_post_copy[0]);
+  }
+
+  const [dialog_open, setDialogOpen] = useState(false);
+  const [dialog_description, setDialogDescription] = useState("");
+  const [dialog_title, setDialogTitle] = useState("");
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  }
+
   const [sort_comments_value, setSortCommentsValue] = useState("most liked - least liked");
 
   /**
@@ -310,10 +364,6 @@ export default function Blogs({match}){
         default:
           blog_post.comments.sort(sortMostLikedToLeastLiked);
       }
-
-      var blog_post_copy = [];
-      blog_post_copy.push(blog_post);
-      setBlogPost(blog_post_copy[0]);
     }
   }
 
@@ -374,7 +424,7 @@ export default function Blogs({match}){
       var comment = findComment(blog_post.comments, id);
       comment.likes += like;
 
-      handleSetComments();
+      handleSetBlogPost();
     }
     else {
       setDialogTitle("Sign In");
@@ -507,6 +557,28 @@ export default function Blogs({match}){
           </div>
 
         </div>
+
+        <Dialog
+            open={dialog_open}
+            onClose={handleDialogClose}
+            aria-labelledby="alert_dialog_title"
+            aria-describedby="alert_dialog_description"
+          >
+            <DialogTitle id="alert_dialog_title">{dialog_title}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert_dialog_description">
+                {dialog_description}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={signInRedirect}>
+                Sign In
+              </Button>
+              <Button onClick={handleDialogClose}>
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
 
       </Card>
     )
