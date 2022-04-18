@@ -187,20 +187,20 @@ function sortOldestToNewest(a, b) {
 }
 
 function sortMostLikedToLeastLiked(a, b) {
-  if ( a.likes < b.likes){
+  if ( a.likes > b.likes){
     return -1;
   }
-  if ( a.likes > b.likes){
+  if ( a.likes < b.likes){
     return 1;
   }
   return 0;
 }
 
 function sortLeastLikedToMostLiked(a, b) {
-  if ( a.likes > b.likes){
+  if ( a.likes < b.likes){
     return -1;
   }
-  if ( a.likes < b.likes){
+  if ( a.likes > b.likes){
     return 1;
   }
   return 0;
@@ -333,9 +333,7 @@ export default function Blogs({match}){
 
   const handleSetBlogPost = () => {
     console.log("handleSetBlogPost() fired");
-    var blog_post_copy = [];
-    blog_post_copy.push(blog_post);
-    setBlogPost(blog_post_copy[0]);
+    setBlogPost(JSON.parse(JSON.stringify(blog_post)));
   }
 
   const [dialog_open, setDialogOpen] = useState(false);
