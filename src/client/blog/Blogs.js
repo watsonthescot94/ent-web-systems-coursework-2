@@ -96,6 +96,32 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+var like_tracker = [];
+
+function createLikeTracker(comments) {
+  for (const tier_0_i in comments) {
+    like_tracker.push({
+      "id": comments[tier_0_i].comment_id,
+      "already_liked": false,
+      "already_disliked": false
+    })
+    
+    for (const tier_1_i in comments[tier_0_i].replies) {
+      like_tracker.push({
+        "id": comments[tier_0_i].replies[tier_1_i].comment_id,
+        "pushed": false
+      })
+
+      for (const tier_2_i in comments[tier_0_i].replies[tier_1_i].replies) {
+        like_tracker.push({
+          "id": comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id,
+          "pushed": false
+        })
+      }
+    }
+  }
+}
+
 /**
  * Method for converting the blog posting date to a string
  * @param {*} time Posting date in milliseconds
@@ -243,19 +269,16 @@ export default function Blogs({match}){
         console.log(data.error);
       } else {
         setBlogPost(data);
+        createLikeTracker(data.comments)
         document.title = data.content.title + " | Love for the Uglies";
       }
     })
 
     listAll(signal).then((data) => {
       if (data && data.error) {
-        console.log("error");
-        console.log(data);
         console.log(data.error);
       }
       else {
-        console.log("success");
-        console.log(data);
         setMostRecentPosts(getMostRecentPosts(data));
       }
     })
@@ -291,6 +314,72 @@ export default function Blogs({match}){
       var blog_post_copy = [];
       blog_post_copy.push(blog_post);
       setBlogPost(blog_post_copy[0]);
+    }
+  }
+
+  var logged_in = true;
+  var current_user_username = "lisasimpson";
+
+  const handleLikeClick = (id, like) => event => {
+    if (logged_in) {
+      var like_button = document.getElementById("like_button_" + id);
+      var dislike_button = document.getElementById("dislike_button_" + id);
+
+      for (const i in like_tracker) {
+        if (like_tracker[i].id == id) {
+          // If user is liking a comment
+          if (like == 1) {
+            // If user has already liked the comment
+            if (like_tracker[i].already_liked == true) {
+              like_button.style.color = "lightgray";
+              like_tracker[i].already_liked = false;
+              like = -1;
+            }
+            // If user has not already liked the comment
+            else {
+              like_button.style.color = "blue";
+              like_tracker[i].already_liked = true;
+              // If user has already disliked the comment
+              if (like_tracker[i].already_disliked == true) {
+                like = 2;
+                like_tracker[i].already_disliked = false;
+                dislike_button.style.color = "lightgray"
+              }
+            }
+          }
+          // If user is disliking a comment
+          else {
+            // If user has already disliked the comment
+            if (like_tracker[i].already_disliked == true) {
+              dislike_button.style.color = "lightgray";
+              like_tracker[i].already_disliked = false;
+              like = 1;
+            }
+            // If user has not already disliked the comment
+            else {
+              dislike_button.style.color = "blue";
+              like_tracker[i].already_disliked = true;
+              // If user has already liked the comment
+              if (like_tracker[i].already_liked == true) {
+                like = -2;
+                like_tracker[i].already_liked = false;
+                like_button.style.color = "lightgray";
+              }
+            }
+          }
+          break;
+        }
+      }
+
+      var comment = findComment(blog_post.comments, id);
+      comment.likes += like;
+
+      handleSetComments();
+    }
+    else {
+      setDialogTitle("Sign In");
+      setDialogDescription("You must be signed in to like/dislike comments");
+      setDialogOpen(true);
     }
   }
 
