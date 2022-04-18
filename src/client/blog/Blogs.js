@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
+import CardHeader from '@material-ui/core/CardHeader'
 import Typography from '@material-ui/core/Typography'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -272,23 +273,25 @@ export default function Blogs({match}){
    */
   const sortComments = event => {
     setSortCommentsValue(event.target.value);
-    switch (event.target.value) {
-      case "newest - oldest":
-        blog_post.comments.sort(sortNewestToOldest);
-        break;
-      case "oldest - newest":
-        blog_post.comments.sort(sortOldestToNewest);
-        break;
-      case "least liked - most liked":
-        blog_post.comments.sort(sortLeastLikedToMostLiked);
-        break;
-      default:
-        blog_post.comments.sort(sortMostLikedToLeastLiked);
-    }
+    if (blog_post.comments.length > 0) {
+      switch (event.target.value) {
+        case "newest - oldest":
+          blog_post.comments.sort(sortNewestToOldest);
+          break;
+        case "oldest - newest":
+          blog_post.comments.sort(sortOldestToNewest);
+          break;
+        case "least liked - most liked":
+          blog_post.comments.sort(sortLeastLikedToMostLiked);
+          break;
+        default:
+          blog_post.comments.sort(sortMostLikedToLeastLiked);
+      }
 
-    var blog_post_copy = [];
-    blog_post_copy.push(blog_post);
-    setBlogPost(blog_post_copy[0]);
+      var blog_post_copy = [];
+      blog_post_copy.push(blog_post);
+      setBlogPost(blog_post_copy[0]);
+    }
   }
 
   const handleReplyButtonClick = id => event => {
