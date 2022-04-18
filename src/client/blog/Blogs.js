@@ -28,7 +28,8 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogActions from '@material-ui/core/DialogActions'
 import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
-import { uuid } from 'uuidv4'
+
+const { v4: uuidv4 } = require('uuid');
 
 const useStyles = makeStyles(theme => ({
   page_container: {
