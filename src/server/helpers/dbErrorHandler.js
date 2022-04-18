@@ -6,12 +6,14 @@
 const getUniqueErrorMessage = (err) => {
     let output
     try {
+        console.log("Error message:" + err.message);
         let fieldName = err.message.substring(err.message.lastIndexOf('.$') + 2, err.message.lastIndexOf('_1'))
         output = fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + ' already exists'
     } catch (ex) {
         output = 'Unique field already exists'
     }
 
+    console.log("output: " + output);
     return output
 }
 
@@ -19,12 +21,14 @@ const getUniqueErrorMessage = (err) => {
  * Get the error message from error object
  */
 const getErrorMessage = (err) => {
+    console.log("getErrorMessage() executing");
     let message = ''
 
     if (err.code) {
         switch (err.code) {
             case 11000:
             case 11001:
+                console.log("case 11000/11001");
                 message = getUniqueErrorMessage(err)
                 break
             default:
