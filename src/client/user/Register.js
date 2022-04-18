@@ -11,26 +11,30 @@ const useStyles = makeStyles(theme => ({
         margin: "auto",
         backgroundColor: "lightgray"
       },
-      page_content_container: {
-        padding: "20px",
-        display: "flex",
-        flexDirection: "row"
+      register_title: {
+          margin: "auto"
       },
-      reister_form: {
+      register_form: {
         width: "70%",
         margin: "auto",
         padding: "10px",
         backgroundColor: "white"
+      },
+      submit_button_container: {
+        display: "flex",
+        justifyContent: "right"
       },
       submit_button: {
           margin: "auto"
       },
       form_input: {
           width: "80%",
-          margin: "auto"
+          margin: "auto",
+          marginBottom: "20px"
       },
       error_message: {
-          color: "red"
+          color: "red",
+          margin: "auto"
       }
 }))
 
@@ -44,28 +48,33 @@ export default function Register() {
 
                 <Card className={classes.register_form}>
                     <CardContent>
-                        <Typography variant="h6">Register New Account</Typography>
+                        <Typography variant="h6" className={classes.register_title}>Register New Account</Typography>
                         <TextField
                             id="username_input"
                             label="Username"
+                            variant="outlined"
                             className={classes.form_input}
                         />
                         <TextField
                             id="email_input"
                             type="email"
                             label="Email Address"
+                            variant="outlined"
                             className={classes.form_input}
                         />
                         <TextField
                             id="password_input"
                             type="password"
                             label="Password"
+                            variant="outlined"
                             className={classes.form_input}
                         />
                         { error !== "" && (
                             <Typography variant="body2" className={classes.error_message}>{error}</Typography>
                         )}
-                        <Button variant="contained" className={classes.submit_button}>REGISTER</Button>
+                        <div className={classes.submit_button_container}>
+                            <Button variant="contained" className={classes.submit_button}>REGISTER</Button>
+                        </div>
                     </CardContent>
                 </Card>
 
