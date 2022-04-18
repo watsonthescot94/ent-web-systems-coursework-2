@@ -53,6 +53,7 @@ function getBlogPostingDate(time) {
  * @returns 10 most recent blog posts
  */
 function getMostRecentPosts(posts) {
+  console.log("getMostRecentPosts()");
   posts.sort(sortRecentPosts);
   if (posts.length < 10) {
     return posts;
@@ -98,9 +99,13 @@ export default function Blogs({match}){
 
     listAll(signal).then((data) => {
       if (data && data.error) {
+        console.log("error");
+        console.log(data);
         console.log(data.error);
       }
       else {
+        console.log("success");
+        console.log(data);
         setMostRecentPosts(getMostRecentPosts(data));
       }
     })
