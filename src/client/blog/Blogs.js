@@ -4,6 +4,7 @@ import {listAll, read} from './api-blog'
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
 import Typography from '@material-ui/core/Typography'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -14,6 +15,11 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
+import Avatar from '@material-ui/core/Avatar'
+import IconButton from '@material-ui/core/IconButton'
+import ThumbUp from '@material-ui/icons/ThumbUp'
+import ThumbDown from '@material-ui/icons/ThumbDown'
+import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles(theme => ({
   page_container: {
@@ -60,6 +66,32 @@ const useStyles = makeStyles(theme => ({
   },
   sort_comments_form_control: {
     width: "30%"
+  },
+  comments: {
+    width: "100%",
+    backgroundColor: "blue",
+    padding: "10px",
+    boxSizing: "border-box"
+  },
+  comment_and_replies: {
+    width: "100%"
+  },
+  tier_0: {
+    width: "100%",
+    marginBottom: "10px"
+  },
+  tier_1: {
+    marginLeft: "10%",
+    width: "90%",
+    marginBottom: "10px"
+  },
+  tier_2: {
+    marginLeft: "20%",
+    width: "80%",
+    marginBottom: "10px"
+  },
+  like_button: {
+    color: "lightgray"
   }
 }))
 
@@ -78,7 +110,6 @@ function getBlogPostingDate(time) {
  * @returns 10 most recent blog posts
  */
 function getMostRecentPosts(posts) {
-  console.log("getMostRecentPosts()");
   posts.sort(sortNewestToOldest);
   if (posts.length < 10) {
     return posts;
@@ -94,7 +125,7 @@ function getMostRecentPosts(posts) {
  * @param {*} post_b Second post to be compared
  * @returns Indication of array position change
  */
-function sortNewestToOldest(post_a, post_b) {
+function sortNewestToOldest(a, b) {
   if ( a.posting_time > b.posting_time){
     return -1;
   }
@@ -132,6 +163,69 @@ function sortLeastLikedToMostLiked(a, b) {
     return 1;
   }
   return 0;
+}
+
+/**
+ * Method for calculating the time since a comment was posted
+ * Calculation adapted from: 
+ * https://stackoverflow.com/a/3177838/11265897
+ * @param {*} comment_date Date comment was posted
+ * @returns String value representing time since comment was posted
+ */
+ function calculateCommentTimestamp(comment_date) {
+  var secs = Math.floor((new Date() - comment_date) / 1000);
+  var interval = secs / 31536000;
+
+  if (interval >= 1) {
+    if (interval < 2) {
+      return "1 year ago";
+    }
+    else {
+      return Math.floor(interval) + " years ago";
+    }
+  }
+
+  interval = secs / 2592000;
+  if (interval >= 1) {
+    if (interval < 2) {
+      return "1 month ago"
+    }
+    else {
+      return Math.floor(interval) + " months ago";
+    }
+  }
+
+  interval = secs / 86400;
+  if (interval >= 1) {
+    if (interval < 2) {
+      return "1 day ago"
+    }
+    else {
+      return Math.floor(interval) + " days ago"
+    };
+  }
+  interval = secs / 3600;
+  if (interval >= 1) {
+    if (interval < 2) {
+      return "1 hr ago"
+    }
+    else {
+      return Math.floor(interval) + " hrs ago";
+    }
+  }
+  interval = secs / 60;
+  if (interval >= 1) {
+    if (interval < 2) {
+      return "1 min ago"
+    }
+    else {
+      return Math.floor(interval) + " mins ago";
+    }
+  }
+  if (secs >= 2) {
+    return secs + " secs ago";
+  }
+  return "1 sec ago";
 }
 
 export default function Blogs({match}){
@@ -197,6 +291,18 @@ export default function Blogs({match}){
     setBlogPost(blog_post_copy[0]);
   }
 
+  const handleReplyButtonClick = id => event => {
+
+  }
+  
+  const handleEditCommentClick = id => event => {
+  
+  }
+  
+  const handleDeleteComment = id => event => {
+    
+  }
+
     return (
       <Card className={classes.page_container}>
 
@@ -237,6 +343,50 @@ export default function Blogs({match}){
                     </Select>
                   </FormControl>
                 </div>
+
+                <Card className={classes.comments}>
+                    {blog_post.comments.map((tier_0_comment) => {
+                      return <div className={classes.comment_and_replies} key={"key_" + tier_0_comment.comment_id}>
+
+                        <Card id={"comment_" + tier_0_comment.comment_id} className={classes.tier_0}>
+                          <CardHeader
+                            avatar={
+                              <Link to={"/user/" + tier_0_comment.author.username}>
+                                <Avatar alt={tier_0_comment.author.username} src={"/assets/images/avatars/" + tier_0_comment.avatar}/></Link>
+                            }
+                            title={<Link to={"/user/" + tier_0_comment.author.username}>{tier_0_comment.author.username}</Link>}
+                            subheader={calculateCommentTimestamp(tier_0_comment.posting_time)}
+                          />
+                          <CardContent>
+                            <Typography variant="h6">
+                              {tier_0_comment.text}
+                            </Typography>
+                          </CardContent>
+                          <CardActions>
+                            <IconButton aria-label="Like" id={"like_button_" + tier_0_comment.comment_id} className={classes.like_button} onClick={handleLikeClick(tier_0_comment.comment_id, 1)}>
+                              <ThumbUp/>
+                            </IconButton>
+                            <Typography variant="h6">
+                              {tier_0_comment.likes}
+                            </Typography>
+                            <IconButton aria-label="Dislike" id={"dislike_button_" + tier_0_comment.comment_id} className={classes.like_button} onClick={handleLikeClick(tier_0_comment.comment_id, -1)}>
+                              <ThumbDown/>
+                            </IconButton>
+                            <Button variant="contained" onClick={handleReplyButtonClick(tier_0_comment.comment_id)}>REPLY</Button>
+                            { current_user_username == tier_0_comment.author.username && (
+                              <span>
+                                <Button variant="contained" onClick={handleEditCommentClick(tier_0_comment.comment_id)}>EDIT</Button>
+                                <Button variant="contained" onClick={handleDeleteComment(tier_0_comment.comment_id)}>DELETE</Button>
+                              </span>
+                            )}
+                          </CardActions>
+                        </Card>
+
+                      </div>
+                    })}
+                </Card>
+
+
               </CardContent>
             </Card>
           </div>
