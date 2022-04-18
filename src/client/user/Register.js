@@ -54,9 +54,10 @@ export default function Register() {
         username: "",
         email: "",
         password: "",
-        dialog_open: false,
         error: ""
     })
+
+    const [dialog_open, setDialogOpen] = useState(false);
 
     const handleInputTextChange = property => event => {
         setInput({ ...user_input, [property]: event.target.value });
@@ -74,7 +75,7 @@ export default function Register() {
                 setInput({ ...user_input, error: data.error });
             }
             else {
-                setInput({ ...user_input, dialog_open: true });
+                setDialogOpen(true);
             }
         })
     }
