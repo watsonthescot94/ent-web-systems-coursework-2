@@ -747,8 +747,8 @@ export default function Blogs({match}){
 
 
 
-                        {tier_0_comment.replies.map((tier_1_comment, tier_1_i) => {
-                          return <div key={tier_1_i}>
+                        {tier_0_comment.replies.map((tier_1_comment) => {
+                          return <div key={"key_" + tier_1_comment.comment_id}>
                             {/** Card for displaying a comment */}
                             <Card id={"comment_" + tier_1_comment.comment_id} className={classes.tier_1}>
                               <CardHeader
@@ -779,7 +779,7 @@ export default function Blogs({match}){
                                 </IconButton>
                                   <Button variant="contained" onClick={handleReplyButtonClick(tier_1_comment.comment_id)}>REPLY</Button>
                                   { current_user_username == tier_1_comment.author.username &&
-                                    <Button variant="contained" className={classes.bottom_button} onClick={handleEditCommentClick(tier_1_comment.comment_id)}>EDIT</Button>
+                                    <Button variant="contained" onClick={handleEditCommentClick(tier_1_comment.comment_id)}>EDIT</Button>
                                   }
                                   { current_user_username == tier_1_comment.author.username &&
                                     <Button variant="contained" onClick={handleDeleteComment(tier_1_comment.comment_id)}>DELETE</Button>
@@ -810,7 +810,7 @@ export default function Blogs({match}){
                               </CardContent>
                               <CardActions>
                                 <div className={classes.write_comment_buttons_container}>
-                                  <Button variant="contained" className={classes.send_reply_button} onClick={handleEditCommentClick(tier_1_comment.comment_id)}>EDIT</Button>
+                                  <Button variant="contained" className={classes.bottom_button} onClick={handleEditCommentSubmit(tier_1_comment.comment_id)}>EDIT</Button>
                                   <Button variant="contained" onClick={handleCancelEditClick(tier_1_comment.comment_id)}>CANCEL</Button>
                                 </div>
                               </CardActions>
@@ -849,6 +849,110 @@ export default function Blogs({match}){
 
 
 
+
+
+
+                            {tier_1_comment.replies.map((tier_2_comment) => {
+                              return <div key={"key_" + tier_2_comment.comment_id}>
+                                {/** Card for displaying a comment */}
+                                <Card id={"comment_" + tier_2_comment.comment_id} className={classes.tier_2}>
+                                  <CardHeader
+                                    avatar={
+                                      <Link to={"/user/" + tier_2_comment.author.username} className={classes.username}>
+                                        <Avatar alt={tier_2_comment.author.username} src={"/assets/images/avatars/" + tier_2_comment.avatar}/></Link>
+                                    }
+                                    title={<Link to={"/user/" + tier_2_comment.author.username}>{tier_2_comment.author.username}</Link>}
+                                    subheader={calculateCommentTimestamp(tier_2_comment.posting_time)}
+                                  />
+                        
+                                  <CardContent>
+                                    <Typography variant="h6">
+                                      <Link to={"/user/" + tier_2_comment.replying_to.username}>@{tier_2_comment.replying_to.username}</Link>
+                                      {'\u00A0' + tier_2_comment.text}
+                                    </Typography>
+                                  </CardContent>
+                        
+                                  <CardActions>
+                                    <IconButton aria-label="Like" id={"like_button_" + tier_2_comment.comment_id} className={classes.like_button} onClick={handleLikeClick(tier_1_comment.comment_id, 1)}>
+                                      <ThumbUp/>
+                                    </IconButton>
+                                    <Typography variant="h6">
+                                      {tier_1_comment.likes}
+                                    </Typography>
+                                    <IconButton aria-label="Dislike" id={"dislike_button_" + tier_2_comment.comment_id} className={classes.like_button} onClick={handleLikeClick(tier_1_comment.comment_id, -1)}>
+                                      <ThumbDown/>
+                                    </IconButton>
+                                      <Button variant="contained" onClick={handleReplyButtonClick(tier_2_comment.comment_id)}>REPLY</Button>
+                                      { current_user_username == tier_1_comment.author.username &&
+                                        <Button variant="contained" onClick={handleEditCommentClick(tier_2_comment.comment_id)}>EDIT</Button>
+                                      }
+                                      { current_user_username == tier_1_comment.author.username &&
+                                        <Button variant="contained" onClick={handleDeleteComment(tier_2_comment.comment_id)}>DELETE</Button>
+                                      }
+                                  </CardActions>
+                                </Card>
+
+                                {/** Card for editing comment */}
+                                <Card id={"edit_comment_card_" + tier_2_comment.comment_id} className={`${classes.tier_2} ${classes.hidden}`}>
+                                  <CardHeader
+                                    title={<Typography variant="h6">Edit Your Comment</Typography>}
+                                  />
+                                  <CardContent>
+                                    <FormControl variant="standard" fullWidth>
+                                      <OutlinedInput
+                                        id={"edit_comment_box_" + tier_2_comment.comment_id}
+                                        onChange={handleCommentInputTextChange("edit_comment_length_counter_" + tier_2_comment.comment_id)}
+                                        aria-describedby={"edit_comment_length_counter_" + tier_2_comment.comment_id}
+                                        multiline
+                                        inputProps={{"maxLength":comment_max_length}}
+                                        variant="outlined"
+                                        maxRows={4}
+                                      />
+                                      <FormHelperText id={"edit_comment_length_counter_" + tier_2_comment.comment_id}>
+                                        0/1000
+                                      </FormHelperText>
+                                    </FormControl>
+                                  </CardContent>
+                                  <CardActions>
+                                    <div className={classes.write_comment_buttons_container}>
+                                      <Button variant="contained" className={classes.bottom_button} onClick={handleEditCommentSubmit(tier_2_comment.comment_id)}>EDIT</Button>
+                                      <Button variant="contained" onClick={handleCancelEditClick(tier_2_comment.comment_id)}>CANCEL</Button>
+                                    </div>
+                                  </CardActions>
+                                </Card>
+                        
+                                {/** Card for writing a reply */}
+                                <Card id={"write_reply_card_" + tier_2_comment.comment_id} className={`${classes.tier_2} ${classes.hidden}`}>
+                                  <CardHeader
+                                    title={<Typography variant="h6">
+                                      Replying to <Link to={"/user/" + tier_2_comment.author.username}>@{tier_2_comment.author.username}</Link>
+                                      </Typography>}
+                                  />
+                                  <CardContent>
+                                    <FormControl variant="standard" fullWidth>
+                                        <OutlinedInput
+                                              id={"reply_input_" + tier_2_comment.comment_id}
+                                              onChange={handleCommentInputTextChange("reply_length_counter_" + tier_2_comment.comment_id)}
+                                              aria-describedby={"reply_length_counter_" + tier_2_comment.comment_id}
+                                              multiline
+                                              inputProps={{"maxLength":comment_max_length}}
+                                              variant="outlined"
+                                              maxRows={4}
+                                        />
+                                        <FormHelperText id={"reply_length_counter_" + tier_2_comment.comment_id}>
+                                          0/1000
+                                        </FormHelperText>
+                                    </FormControl>
+                                  </CardContent>
+                                  <CardActions>
+                                  <div className={classes.write_comment_buttons_container}>
+                                    <Button className={classes.bottom_button} variant="contained" onClick={handleSubmitReplyClick(tier_2_comment.comment_id)}>SEND</Button>
+                                    <Button variant="contained" onClick={handleCancelReplyClick(tier_2_comment.comment_id)}>CANCEL</Button>
+                                  </div>
+                                  </CardActions>
+                                </Card>
+                              </div>
+                            })}
 
 
                           </div>
