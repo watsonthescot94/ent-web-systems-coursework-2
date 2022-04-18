@@ -330,6 +330,7 @@ export default function Blogs({match}){
   }, [match.params.blog_id])
 
   const handleSetBlogPost = () => {
+    console.log("handleSetBlogPost() fired");
     var blog_post_copy = [];
     blog_post_copy.push(blog_post);
     setBlogPost(blog_post_copy[0]);
@@ -365,12 +366,17 @@ export default function Blogs({match}){
           blog_post.comments.sort(sortMostLikedToLeastLiked);
       }
     }
+
+    handleSetBlogPost();
   }
 
   var logged_in = true;
   var current_user_username = "lisasimpson";
 
   const handleLikeClick = (id, like) => event => {
+    console.log("like: " + like);
+    console.log("like_tracker: ");
+    console.log(like_tracker);
     if (logged_in) {
       var like_button = document.getElementById("like_button_" + id);
       var dislike_button = document.getElementById("dislike_button_" + id);
