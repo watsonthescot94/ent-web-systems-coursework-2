@@ -26,6 +26,8 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogActions from '@material-ui/core/DialogActions'
+import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText'
+import OutlinedInput from '@material-ui/core/OutlinedInput'
 
 const useStyles = makeStyles(theme => ({
   page_container: {
@@ -98,10 +100,20 @@ const useStyles = makeStyles(theme => ({
   },
   like_button: {
     color: "lightgray"
+  },
+  hidden: {
+    display: "none"
+  },
+  reply_buttons_container: {
+    display: "flex",
+    justifyContent: "right",
+    width: "100%",
+    marginBottom: "10px",
   }
 }))
 
 var like_tracker = [];
+var comment_max_length = 1000;
 
 function createLikeTracker(comments) {
   for (const tier_0_i in comments) {
@@ -446,10 +458,34 @@ export default function Blogs({match}){
   }
   
   const handleEditCommentClick = id => event => {
-  
+    var comment_text = findComment(blog_post.comments, id).text;
+    document.getElementById("edit_comment_card_" + id).style.display = "inline-block";
+    document.getElementById("comment_" + id).style.display = "none";
+    document.getElementById("edit_comment_input_" + id).value = comment_text;
+    document.getElementById("edit_comment_length_counter_" + id).innerHTML = comment_text.length + "/1000";
   }
   
   const handleDeleteComment = id => event => {
+    
+  }
+
+  const handleCommentInputTextChange = id => event => {
+    document.getElementById(id).innerHTML = event.target.value.length + "/" + comment_max_length;
+  }
+
+  const handleEditCommentSubmit = id => event => {
+    var comment = findComment(blog_post.comments, id);
+    var comment_text = document.getElementById("edit_comment_input_" + id).value.trim().replace(/(<([^>]+)>)/gi, "");
+
+    if (comment_text.length > 0) {
+      comment.text = comment_text;
+      document.getElementById("edit_comment_card_" + id).style.display = "none";
+      document.getElementById("comment_" + id).style.display = "inline-block";
+      handleSetBlogPost();
+    }
+  }
+
+  const handleCancelEditClick = id => event => {
     
   }
 
@@ -498,6 +534,7 @@ export default function Blogs({match}){
                     {blog_post.comments.map((tier_0_comment) => {
                       return <div className={classes.comment_and_replies} key={"key_" + tier_0_comment.comment_id}>
 
+                        {/* Card for displaying comment */}
                         <Card id={"comment_" + tier_0_comment.comment_id} className={classes.tier_0}>
                           <CardHeader
                             avatar={
@@ -529,6 +566,35 @@ export default function Blogs({match}){
                                 <Button variant="contained" onClick={handleDeleteComment(tier_0_comment.comment_id)}>DELETE</Button>
                               </span>
                             )}
+                          </CardActions>
+                        </Card>
+
+                        {/** Card for editing comment */}
+                        <Card id={"edit_comment_card_" + tier_0_comment.comment_id} className={`${classes.tier_0} ${classes.hidden}`}>
+                          <CardHeader
+                            title={<Typography variant="h6">Edit Your Comment</Typography>}
+                          />
+                          <CardContent>
+                            <FormControl variant="standard" fullWidth>
+                              <OutlinedInput
+                                id={"edit_comment_input_" + tier_0_comment.comment_id}
+                                onChange={handleCommentInputTextChange("edit_comment_length_counter" + tier_0_comment.comment_id)}
+                                aria-describedby={"edit_comment_length_counter_" + tier_0_comment.comment_id}
+                                multiline
+                                inputProps={{"maxLength":comment_max_length}}
+                                variant="outlined"
+                                maxRows={4}
+                              />
+                              <FormHelperText id={"edit_comment_length_counter_" + tier_0_comment.comment_id}>
+                                0/1000
+                              </FormHelperText>
+                            </FormControl>
+                          </CardContent>
+                          <CardActions>
+                            <div className={classes.reply_buttons_container}>
+                              <Button variant="contained" className={classes.send_reply_button} onClick={handleEditCommentSubmit(tier_0_comment.comment_id)}>EDIT</Button>
+                              <Button variant="contained" onClick={handleCancelEditClick(tier_0_comment.comment_id)}>CANCEL</Button>
+                            </div>
                           </CardActions>
                         </Card>
 
