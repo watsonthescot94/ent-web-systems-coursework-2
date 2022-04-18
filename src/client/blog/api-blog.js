@@ -11,7 +11,6 @@ const listAll = async (signal) => {
 }
 
 const read = async (params, signal) => {
-  console.log("Executing read() in api-blog.js");
     try {
       let response = await fetch('/api/blogs/' + params.blog_id, {
         method: 'GET',
