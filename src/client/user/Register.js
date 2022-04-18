@@ -10,32 +10,33 @@ const useStyles = makeStyles(theme => ({
         width: "80%",
         margin: "auto",
         backgroundColor: "lightgray"
-      },
-      register_title: {
-          margin: "auto"
-      },
-      register_form: {
+    },
+    register_form: {
         width: "70%",
-        margin: "auto",
+        margin: "10px auto 10px",
         padding: "10px",
         backgroundColor: "white"
-      },
-      submit_button_container: {
+    },
+    form_container: {
+        margin: "auto",
+        width: "80%"
+    },
+    register_title: {
+        margin: "0px auto 10px auto"
+    },
+    form_input: {
+        width: "100%",
+        marginBottom: "20px"
+    },
+    submit_button_container: {
         display: "flex",
-        justifyContent: "right"
-      },
-      submit_button: {
-          margin: "auto"
-      },
-      form_input: {
-          width: "80%",
-          margin: "auto",
-          marginBottom: "20px"
-      },
-      error_message: {
+        justifyContent: "right",
+        width: "100%"
+    },
+    error_message: {
           color: "red",
           margin: "auto"
-      }
+    }
 }))
 
 export default function Register() {
@@ -48,32 +49,34 @@ export default function Register() {
 
                 <Card className={classes.register_form}>
                     <CardContent>
-                        <Typography variant="h6" className={classes.register_title}>Register New Account</Typography>
-                        <TextField
-                            id="username_input"
-                            label="Username"
-                            variant="outlined"
-                            className={classes.form_input}
-                        />
-                        <TextField
-                            id="email_input"
-                            type="email"
-                            label="Email Address"
-                            variant="outlined"
-                            className={classes.form_input}
-                        />
-                        <TextField
-                            id="password_input"
-                            type="password"
-                            label="Password"
-                            variant="outlined"
-                            className={classes.form_input}
-                        />
-                        { error !== "" && (
-                            <Typography variant="body2" className={classes.error_message}>{error}</Typography>
-                        )}
-                        <div className={classes.submit_button_container}>
-                            <Button variant="contained" className={classes.submit_button}>REGISTER</Button>
+                        <div className={classes.form_container}>
+                            <Typography variant="h6" className={classes.register_title}>Register New Account</Typography>
+                            <TextField
+                                id="username_input"
+                                label="Username"
+                                variant="outlined"
+                                className={classes.form_input}
+                            />
+                            <TextField
+                                id="email_input"
+                                type="email"
+                                label="Email Address"
+                                variant="outlined"
+                                className={classes.form_input}
+                            />
+                            <TextField
+                                id="password_input"
+                                type="password"
+                                label="Password"
+                                variant="outlined"
+                                className={classes.form_input}
+                            />
+                            { error !== "" && (
+                                <Typography variant="body2" className={classes.error_message}>{error}</Typography>
+                            )}
+                            <div className={classes.submit_button_container}>
+                                <Button variant="contained">REGISTER</Button>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
