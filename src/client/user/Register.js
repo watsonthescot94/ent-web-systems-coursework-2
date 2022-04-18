@@ -69,7 +69,7 @@ export default function Register() {
             email: user_input.email || undefined,
             password: user_input.password || undefined
         }
-
+        
         create(new_user).then((data) => {
             if (data.error) {
                 setInput({ ...user_input, error: data.error });

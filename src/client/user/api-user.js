@@ -14,3 +14,7 @@ const create = async(user) => {
         console.log(err);
     }
 }
+
+export {
+    create
+}
