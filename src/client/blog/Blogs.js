@@ -149,7 +149,7 @@ export default function Blogs({match}){
               >
                 {most_recent_posts.map((recent_post => {
                   return <ListItem button>
-                    <ListItemText primary={recent_post.title} />
+                    <ListItemText primary={recent_post.content.title} />
                     </ListItem>
                 }))}
 
