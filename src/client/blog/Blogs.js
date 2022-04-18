@@ -36,6 +36,10 @@ const useStyles = makeStyles(theme => ({
   },
   list_container: {
     backgroundColor: "white"
+  },
+  recent_post_container: {
+    textDecoration: "none",
+    color: "gray"
   }
 }))
 
@@ -149,7 +153,7 @@ export default function Blogs({match}){
                 }
               >
                 {most_recent_posts.map((recent_post => {
-                  return <Link to={"/blogs/" + recent_post.blog_id}>
+                  return <Link to={"/blogs/" + recent_post.blog_id} className={classes.recent_post_title}>
                           <ListItem button>
                             <ListItemText primary={recent_post.content.title} />
                           </ListItem>
