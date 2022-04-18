@@ -485,7 +485,7 @@ export default function Blogs({match}){
         for (const tier_0_i in blog_post.comments) {
           if (blog_post.comments[tier_0_i].comment_id == id) {
             blog_post.comments[tier_0_i].replies.push({
-              "comment_id": uuid(),
+              "comment_id": uuidv4(),
                 "author": {
                   "user_id": current_user_id,
                   "username": current_user_username,
@@ -506,7 +506,7 @@ export default function Blogs({match}){
             for (const tier_1_i in blog_post.comments[tier_0_i].replies) {
               if (blog_post.comments[tier_0_i].replies[tier_1_i].comment_id == id) {
                 blog_post.comments[tier_0_i].replies[tier_1_i].replies.push({
-                  "comment_id": uuid(),
+                  "comment_id": uuidv4(),
                     "author": {
                       "user_id": current_user_id,
                       "username": current_user_username,
@@ -527,7 +527,7 @@ export default function Blogs({match}){
                 for (const tier_2_i in blog_post.comments[tier_0_i].replies[tier_1_i].replies) {
                   if (blog_post.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id == id) {
                     blog_post.comments[tier_0_i].replies[tier_1_i].replies.push({
-                      "comment_id": uuid(),
+                      "comment_id": uuidv4(),
                         "author": {
                           "user_id": current_user_id,
                           "username": current_user_username,
