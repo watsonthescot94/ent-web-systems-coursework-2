@@ -114,13 +114,15 @@ function createLikeTracker(comments) {
     for (const tier_1_i in comments[tier_0_i].replies) {
       like_tracker.push({
         "id": comments[tier_0_i].replies[tier_1_i].comment_id,
-        "pushed": false
+        "already_liked": false,
+        "already_disliked": false
       })
 
       for (const tier_2_i in comments[tier_0_i].replies[tier_1_i].replies) {
         like_tracker.push({
           "id": comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id,
-          "pushed": false
+          "already_liked": false,
+          "already_disliked": false
         })
       }
     }
@@ -377,6 +379,8 @@ export default function Blogs({match}){
     console.log("like: " + like);
     console.log("like_tracker: ");
     console.log(like_tracker);
+    let changeLike = like;
+
     if (logged_in) {
       var like_button = document.getElementById("like_button_" + id);
       var dislike_button = document.getElementById("dislike_button_" + id);
@@ -389,7 +393,7 @@ export default function Blogs({match}){
             if (like_tracker[i].already_liked == true) {
               like_button.style.color = "lightgray";
               like_tracker[i].already_liked = false;
-              like = -1;
+              changeLike = -1;
             }
             // If user has not already liked the comment
             else {
@@ -397,7 +401,7 @@ export default function Blogs({match}){
               like_tracker[i].already_liked = true;
               // If user has already disliked the comment
               if (like_tracker[i].already_disliked == true) {
-                like = 2;
+                changeLike = 2;
                 like_tracker[i].already_disliked = false;
                 dislike_button.style.color = "lightgray"
               }
@@ -409,7 +413,7 @@ export default function Blogs({match}){
             if (like_tracker[i].already_disliked == true) {
               dislike_button.style.color = "lightgray";
               like_tracker[i].already_disliked = false;
-              like = 1;
+              changeLike = 1;
             }
             // If user has not already disliked the comment
             else {
@@ -417,7 +421,7 @@ export default function Blogs({match}){
               like_tracker[i].already_disliked = true;
               // If user has already liked the comment
               if (like_tracker[i].already_liked == true) {
-                like = -2;
+                changeLike = -2;
                 like_tracker[i].already_liked = false;
                 like_button.style.color = "lightgray";
               }
@@ -428,7 +432,7 @@ export default function Blogs({match}){
       }
 
       var comment = findComment(blog_post.comments, id);
-      comment.likes += like;
+      comment.likes += changeLike;
 
       handleSetBlogPost();
     }
