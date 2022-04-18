@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
         required: "Password required"
     },
     admin: {
-        type: Boolean,
+        type: Boolean, 
         default: false
     },
     salt: String,
