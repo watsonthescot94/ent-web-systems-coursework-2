@@ -109,6 +109,13 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "right",
     width: "100%",
     marginBottom: "10px",
+  },
+  send_reply_button: {
+    marginRight: "10px"
+  },
+  username: {
+    textDecoration: "none",
+    color: "black"
   }
 }))
 
@@ -466,7 +473,30 @@ export default function Blogs({match}){
   }
   
   const handleDeleteComment = id => event => {
-    
+    for (const tier_0_i in blog_post.comments) {
+      if (blog_post.comments[tier_0_i].comment_id == id) {
+        blog_post.comments.splice(tier_0_i, 1);
+        break;
+      }
+      else {
+        for (const tier_1_i in blog_post.comments[tier_0_i].replies) {
+          if (blog_post.comments[tier_0_i].replies[tier_1_i].comment_id == id) {
+            blog_post.comments[tier_0_i].replies.splice(tier_1_i, 1);
+            break;
+          }
+          else {
+            for (const tier_2_i in blog_post.comments[tier_0_i].replies[tier_1_i].replies) {
+              if (blog_post.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id == id) {
+                blog_post.comments[tier_0_i].replies[tier_1_i].replies.splice(tier_2_i, 1);
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    handleSetBlogPost();
   }
 
   const handleCommentInputTextChange = id => event => {
@@ -486,7 +516,8 @@ export default function Blogs({match}){
   }
 
   const handleCancelEditClick = id => event => {
-    
+    document.getElementById("edit_comment_card_" + id).style.display = "none";
+    document.getElementById("comment_" + id).style.display = "inline-block";
   }
 
     return (
@@ -538,7 +569,7 @@ export default function Blogs({match}){
                         <Card id={"comment_" + tier_0_comment.comment_id} className={classes.tier_0}>
                           <CardHeader
                             avatar={
-                              <Link to={"/user/" + tier_0_comment.author.username}>
+                              <Link to={"/user/" + tier_0_comment.author.username} className={classes.username}>
                                 <Avatar alt={tier_0_comment.author.username} src={"/assets/images/avatars/" + tier_0_comment.avatar}/></Link>
                             }
                             title={<Link to={"/user/" + tier_0_comment.author.username}>{tier_0_comment.author.username}</Link>}
@@ -578,7 +609,7 @@ export default function Blogs({match}){
                             <FormControl variant="standard" fullWidth>
                               <OutlinedInput
                                 id={"edit_comment_input_" + tier_0_comment.comment_id}
-                                onChange={handleCommentInputTextChange("edit_comment_length_counter" + tier_0_comment.comment_id)}
+                                onChange={handleCommentInputTextChange("edit_comment_length_counter_" + tier_0_comment.comment_id)}
                                 aria-describedby={"edit_comment_length_counter_" + tier_0_comment.comment_id}
                                 multiline
                                 inputProps={{"maxLength":comment_max_length}}
