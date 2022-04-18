@@ -28,6 +28,7 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogActions from '@material-ui/core/DialogActions'
 import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
+import { uuid } from 'uuidv4'
 
 const useStyles = makeStyles(theme => ({
   page_container: {
@@ -104,13 +105,13 @@ const useStyles = makeStyles(theme => ({
   hidden: {
     display: "none"
   },
-  reply_buttons_container: {
+  write_comment_buttons_container: {
     display: "flex",
     justifyContent: "right",
     width: "100%",
     marginBottom: "10px",
   },
-  send_reply_button: {
+  bottom_button: {
     marginRight: "10px"
   },
   username: {
@@ -461,7 +462,104 @@ export default function Blogs({match}){
   }
 
   const handleReplyButtonClick = id => event => {
+    document.getElementById("write_reply_card_" + id).style.display = "inline-block";
+    document.getElementById("reply_input_" + id).focus();
+  }
 
+  const handleReplyTextChange = id => event => {
+    document.getElementById("reply_length_counter_" + id).innerHTML = event.target.value.length + "/" + comment_max_length;
+  }
+
+  const handleCancelReplyClick = id => event => {
+    document.getElementById("write_reply_card_" + id).style.display = "none";
+  }
+
+  const handleSubmitReplyClick = id => event => {
+    event.stopPropagation();
+    const comment_text = document.getElementById("reply_box_" + id).value.trim().replace(/(<([^>]+)>)/gi, "");
+    var success = true;
+
+    if (success) {
+      if (comment_text.length > 0) {
+        for (const tier_0_i in blog_post.comments) {
+          if (blog_post.comments[tier_0_i].comment_id == id) {
+            blog_post.comments[tier_0_i].replies.push({
+              "comment_id": uuid(),
+                "author": {
+                  "user_id": current_user_id,
+                  "username": current_user_username,
+                },
+                "replying_to": {
+                  "user_id": blog_post.comments[tier_0_i].author.user_id,
+                  "username": blog_post.comments[tier_0_i].author.username
+                },
+                "text": comment_text,
+                "posting_time": Date.now(),
+                "avatar": current_user_avatar,
+                "likes": 0,
+                "replies": []
+            })
+            break;
+          }
+          else {
+            for (const tier_1_i in blog_post.comments[tier_0_i].replies) {
+              if (blog_post.comments[tier_0_i].replies[tier_1_i].comment_id == id) {
+                blog_post.comments[tier_0_i].replies[tier_1_i].replies.push({
+                  "comment_id": uuid(),
+                    "author": {
+                      "user_id": current_user_id,
+                      "username": current_user_username,
+                    },
+                    "replying_to": {
+                      "user_id": blog_post.comments[tier_0_i].replies[tier_1_i].author.user_id,
+                      "username": blog_post.comments[tier_0_i].replies[tier_1_i].author.username
+                    },
+                    "text": comment_text,
+                    "posting_time": Date.now(),
+                    "avatar": current_user_avatar,
+                    "likes": 0,
+                    "replies": []
+                })
+                break;
+              }
+              else {
+                for (const tier_2_i in blog_post.comments[tier_0_i].replies[tier_1_i].replies) {
+                  if (blog_post.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id == id) {
+                    blog_post.comments[tier_0_i].replies[tier_1_i].replies.push({
+                      "comment_id": uuid(),
+                        "author": {
+                          "user_id": current_user_id,
+                          "username": current_user_username,
+                        },
+                        "replying_to": {
+                          "user_id": blog_post.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].author.user_id,
+                          "username": blog_post.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].author.username
+                        },
+                        "text": comment_text,
+                        "posting_time": Date.now(),
+                        "avatar": current_user_avatar,
+                        "likes": 0
+                    })
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        like_tracker.push({
+          "id": "311111118",
+          "already_liked": false,
+          "already_disliked": false
+        })
+        document.getElementById("reply_box_" + id).value = "";
+        document.getElementById("comment_length_counter_" + id).innerHTML = "0/1000";
+
+        handleSetComments();
+        hideReplyCard(id);
+      }
+    }
   }
   
   const handleEditCommentClick = id => event => {
@@ -593,7 +691,7 @@ export default function Blogs({match}){
                             <Button variant="contained" onClick={handleReplyButtonClick(tier_0_comment.comment_id)}>REPLY</Button>
                             { current_user_username == tier_0_comment.author.username && (
                               <span>
-                                <Button variant="contained" onClick={handleEditCommentClick(tier_0_comment.comment_id)}>EDIT</Button>
+                                <Button variant="contained" className={classes.bottom_button} onClick={handleEditCommentClick(tier_0_comment.comment_id)}>EDIT</Button>
                                 <Button variant="contained" onClick={handleDeleteComment(tier_0_comment.comment_id)}>DELETE</Button>
                               </span>
                             )}
@@ -622,9 +720,40 @@ export default function Blogs({match}){
                             </FormControl>
                           </CardContent>
                           <CardActions>
-                            <div className={classes.reply_buttons_container}>
-                              <Button variant="contained" className={classes.send_reply_button} onClick={handleEditCommentSubmit(tier_0_comment.comment_id)}>EDIT</Button>
+                            <div className={classes.write_comment_buttons_container}>
+                              <Button variant="contained" className={classes.bottom_button} onClick={handleEditCommentSubmit(tier_0_comment.comment_id)}>EDIT</Button>
                               <Button variant="contained" onClick={handleCancelEditClick(tier_0_comment.comment_id)}>CANCEL</Button>
+                            </div>
+                          </CardActions>
+                        </Card>
+
+                        {/** Card for writing a reply */}
+                        <Card id={"write_reply_card_" + tier_0_comment.comment_id} className={`${classes.tier_1} ${classes.hidden}`}>
+                          <CardHeader
+                            title={<Typography variant="h6">
+                              Replying to <Link to={"/user/" + tier_0_comment.author.username}>@{tier_0_comment.author.username}</Link>
+                            </Typography>}
+                          />
+                          <CardContent>
+                            <FormControl variant="standard" fullWidth>
+                              <OutlinedInput
+                                id={"reply_input_" + tier_0_comment.comment_id}
+                                onChange={handleReplyTextChange(tier_0_comment.comment_id)}
+                                aria-describedby={"reply_length_counter_" + tier_0_comment.comment_id}
+                                multiline
+                                inputProps={{"maxLength":comment_max_length}}
+                                variant="outlined"
+                                maxRows={4}
+                              />
+                              <FormHelperText id={"reply_length_counter_" + tier_0_comment.comment_id}>
+                                0/1000
+                              </FormHelperText>
+                            </FormControl>
+                          </CardContent>
+                          <CardActions>
+                            <div className={classes.write_comment_buttons_container}>
+                              <Button id={"submit_reply_button_" + tier_0_comment.comment_id} variant="contained" className={classes.bottom_button} onClick={handleSubmitReplyClick(tier_0_comment.comment_id)}>SEND</Button>
+                              <Button variant="contained" onClick={handleCancelReplyClick(tier_0_comment.comment_id)}>CANCEL</Button>
                             </div>
                           </CardActions>
                         </Card>
