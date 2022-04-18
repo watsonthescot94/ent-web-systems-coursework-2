@@ -383,7 +383,7 @@ export default function Blogs({match}){
   }
 
   var logged_in = true;
-  var current_user_username = "lisasimpson";
+  var current_user_username = "colin_456";
 
   const handleLikeClick = (id, like) => event => {
     console.log("like: " + like);
