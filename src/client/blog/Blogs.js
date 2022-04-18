@@ -11,6 +11,9 @@ import ListSubheader from '@material-ui/core/ListSubheader'
 import ListItemText from '@material-ui/core/ListItemText'
 import { Link } from 'react-router-dom'
 import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import Select from '@material-ui/core/Select'
 
 const useStyles = makeStyles(theme => ({
   page_container: {
@@ -54,6 +57,9 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "row",
     marginBottom: "10px"
+  },
+  sort_comments_form_control: {
+    width: "30%"
   }
 }))
 
