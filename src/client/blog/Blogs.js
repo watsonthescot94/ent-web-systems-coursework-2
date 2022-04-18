@@ -875,13 +875,13 @@ export default function Blogs({match}){
                                   </CardContent>
                         
                                   <CardActions>
-                                    <IconButton aria-label="Like" id={"like_button_" + tier_2_comment.comment_id} className={classes.like_button} onClick={handleLikeClick(tier_1_comment.comment_id, 1)}>
+                                    <IconButton aria-label="Like" id={"like_button_" + tier_2_comment.comment_id} className={classes.like_button} onClick={handleLikeClick(tier_2_comment.comment_id, 1)}>
                                       <ThumbUp/>
                                     </IconButton>
                                     <Typography variant="h6">
-                                      {tier_1_comment.likes}
+                                      {tier_2_comment.likes}
                                     </Typography>
-                                    <IconButton aria-label="Dislike" id={"dislike_button_" + tier_2_comment.comment_id} className={classes.like_button} onClick={handleLikeClick(tier_1_comment.comment_id, -1)}>
+                                    <IconButton aria-label="Dislike" id={"dislike_button_" + tier_2_comment.comment_id} className={classes.like_button} onClick={handleLikeClick(tier_2_comment.comment_id, -1)}>
                                       <ThumbDown/>
                                     </IconButton>
                                     <Button variant="contained" onClick={handleReplyButtonClick(tier_2_comment.comment_id)}>REPLY</Button>
