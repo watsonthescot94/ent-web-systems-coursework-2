@@ -964,7 +964,7 @@ export default function Blogs({match}){
                               <CardContent>
                                 <FormControl variant="standard" fullWidth>
                                   <OutlinedInput
-                                    id={"edit_comment_box_" + tier_1_comment.comment_id}
+                                    id={"edit_comment_input_" + tier_1_comment.comment_id}
                                     onChange={handleCommentInputTextChange("edit_comment_length_counter_" + tier_1_comment.comment_id)}
                                     aria-describedby={"edit_comment_length_counter_" + tier_1_comment.comment_id}
                                     multiline
@@ -1069,7 +1069,7 @@ export default function Blogs({match}){
                                   <CardContent>
                                     <FormControl variant="standard" fullWidth>
                                       <OutlinedInput
-                                        id={"edit_comment_box_" + tier_2_comment.comment_id}
+                                        id={"edit_comment_input_" + tier_2_comment.comment_id}
                                         onChange={handleCommentInputTextChange("edit_comment_length_counter_" + tier_2_comment.comment_id)}
                                         aria-describedby={"edit_comment_length_counter_" + tier_2_comment.comment_id}
                                         multiline
