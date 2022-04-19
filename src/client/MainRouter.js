@@ -5,6 +5,7 @@ import Home from './core/Home'
 import Register from './user/Register'
 import Login from './auth/Login'
 import Shop from './shop/Shop'
+import AllBlogs from './blog/AllBlogs'
 
 const MainRouter = () => {
     return (<div>
@@ -14,6 +15,7 @@ const MainRouter = () => {
         <Route path='/register' component={Register}/>
         <Route path='/login' component={Login}/>
         <Route path='/shop' component={Shop}/>
+        <Route path='/allblogs' component={AllBlogs}/>
       </Switch>
     </div>)
 }
