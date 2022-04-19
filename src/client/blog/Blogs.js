@@ -561,12 +561,12 @@ export default function Blogs({match}){
 
         handleSetBlogPost();
 
-        var data = {
+        var blog_user_data = {
           current_user: current_user,
           blog: blog_post
         }
 
-        update(data, { t: jwt.token }).then((data) => {
+        update(blog_user_data, { t: jwt.token }).then((data) => {
           if (data && data.error) {
             console.log("Update error:" + data.error);
           } else {
@@ -627,7 +627,12 @@ export default function Blogs({match}){
       document.getElementById("comment_" + id).style.display = "inline-block";
       handleSetBlogPost();
 
-      update(data, { t: jwt.token }).then((data) => {
+      var blog_user_data = {
+        current_user: current_user,
+        blog: blog_post
+      }
+
+      update(blog_user_data, { t: jwt.token }).then((data) => {
         if (data && data.error) {
           console.log("Update error:" + data.error);
         } else {
