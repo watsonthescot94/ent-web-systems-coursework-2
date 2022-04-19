@@ -8,33 +8,27 @@ import {makeStyles} from '@material-ui/core/styles'
 import React, { useEffect, useState } from 'react'
 import { listAll } from './api-shop'
 
+
 const useStyles = makeStyles(theme => ({
     shop_items_container: {
         width: "60%",
+        backgroundColor: "blue",
+        boxSizing: "border-box",
+        padding: "10px",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        margin: "auto",
-        padding: "10px",
-        backgroundColor: "blue"
+        flexWrap: "wrap"
     },
     shop_item_card: {
-        width: "45%",
+        width: "40%",
         margin: "10px",
-        padding: "10px"
+        padding: "10px",
+        boxSizing: "border-box"
     },
     add_to_cart_container: {
         display: "flex",
         justifyContent: "right"
-    },
-    row: {
-        display: "flex",
-        boxSizing: "border-box"
-    },
-    column: {
-        padding: "10px",
-        flex: "50%",
-        boxSizing: "border-box"
     }
 }))
 
@@ -61,80 +55,38 @@ export default function Shop(){
         <div className={classes.shop_items_container}>
             {shop.map((item, i) => {
                 return <div key={"item_key_" + i}>
-
-                    {i % 2 != 0 && (
-                        <div className={classes.row}>
-
-                            <Card className={classes.column}>
-                                <CardMedia
-                                component="img"
-                                image={"/assets/images/shop/" + item.image}
-                                alt={item.image}
-                                />
-                                <CardContent>
-                                <Typography variant="h5">{item.name}</Typography>
-                                <Typography variant="body1">{item.price}</Typography>
-                                <Typography variant="body1">{item.description}</Typography>
-                                <br/>
-                                {item.stock <= 5 && item.stock > 0 && (
-                                    <Typography variant="body1">Only {item.stock} Left in Stock!</Typography>
-                                )}
-                                {item.stock > 5 && (
-                                    <Typography variant="body1">In Stock</Typography>
+                    <Card className={classes.shop_item_card}>
+                        <CardMedia
+                        component="img"
+                        image={"/assets/images/shop/" + item.image}
+                        alt={item.image}
+                        />
+                        <CardContent>
+                        <Typography variant="h5">{item.name}</Typography>
+                        <Typography variant="body1">{item.price}</Typography>
+                        <Typography variant="body1">{item.description}</Typography>
+                        <br/>
+                        {item.stock <= 5 && item.stock > 0 && (
+                            <Typography variant="body1">Only {item.stock} Left in Stock!</Typography>
+                        )}
+                        {item.stock > 5 && (
+                            <Typography variant="body1">In Stock</Typography>
+                        )}
+                        {item.stock == 0 && (
+                            <Typography variant="body1">Out of Stock</Typography>
+                        )}
+                        </CardContent>
+                        <CardActions>
+                            <span className={classes.add_to_cart_container}>
+                                {item.stock > 0 && (
+                                    <Button variant="contained">Add to Cart</Button>
                                 )}
                                 {item.stock == 0 && (
-                                    <Typography variant="body1">Out of Stock</Typography>
+                                    <Button variant="contained" disabled={true}>Add to Cart</Button>
                                 )}
-                                </CardContent>
-                                <CardActions>
-                                    <span className={classes.add_to_cart_container}>
-                                        {item.stock > 0 && (
-                                            <Button variant="contained">Add to Cart</Button>
-                                        )}
-                                        {item.stock == 0 && (
-                                            <Button variant="contained" disabled={true}>Add to Cart</Button>
-                                        )}
-                                    </span>
-                                </CardActions>
-                            </Card>
-
-                            {i !== shop.length -1 && (
-                                <Card className={classes.column}>
-                                    <CardMedia
-                                    component="img"
-                                    image={"/assets/images/shop/" + shop[i + 1].image}
-                                    alt={shop[i + 1].image}
-                                    />
-                                    <CardContent>
-                                    <Typography variant="h5">{shop[i + 1].name}</Typography>
-                                    <Typography variant="body1">{shop[i + 1].price}</Typography>
-                                    <Typography variant="body1">{shop[i + 1].description}</Typography>
-                                    <br/>
-                                    {shop[i + 1].stock <= 5 && item.stock > 0 && (
-                                        <Typography variant="body1">Only {item.stock} Left in Stock!</Typography>
-                                    )}
-                                    {shop[i + 1].stock > 5 && (
-                                        <Typography variant="body1">In Stock</Typography>
-                                    )}
-                                    {shop[i + 1].stock == 0 && (
-                                        <Typography variant="body1">Out of Stock</Typography>
-                                    )}
-                                    </CardContent>
-                                    <CardActions>
-                                        <span className={classes.add_to_cart_container}>
-                                            {shop[i + 1].stock > 0 && (
-                                                <Button variant="contained">Add to Cart</Button>
-                                            )}
-                                            {shop[i + 1].stock == 0 && (
-                                                <Button variant="contained" disabled={true}>Add to Cart</Button>
-                                            )}
-                                        </span>
-                                    </CardActions>
-                                </Card>
-                            )}
-
-                        </div>
-                    )}
+                            </span>
+                        </CardActions>
+                    </Card>
                 </div>
             })}
         </div>
