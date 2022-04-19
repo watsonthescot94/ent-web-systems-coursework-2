@@ -33,12 +33,12 @@ export default function Shop(){
 
     var current_user = {
         logged_in: false
-      }
+    }
     
-      if (auth.isAuthenticated().user) {
-        current_user.logged_in = true;
-        current_user.id = auth.isAuthenticated().user._id;
-      }
+    if (auth.isAuthenticated().user) {
+    current_user.logged_in = true;
+    current_user.id = auth.isAuthenticated().user._id;
+    }
 
     const [shop, setShop] = useState([]);
 
@@ -61,13 +61,13 @@ export default function Shop(){
     })
 
     const handleAddToCartClick = id => {
-        addToCart({ user_id: current_user.id, item_id: id }, { t: jwt.token }).then((data) => {
+        /*addToCart({ user_id: current_user.id, item_id: id }, { t: jwt.token }).then((data) => {
             if (data && data.error) {
                 console.log(data.error);
               } else {
                 console.log("add to cart success");
               }
-        })
+        })*/
     }
     
     return (
