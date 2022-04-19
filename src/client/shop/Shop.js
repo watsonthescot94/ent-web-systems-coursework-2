@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 import { listAll } from './api-shop'
 import { addToCart } from './api-shop'
 import auth from '../auth/auth-helper'
+import Header from '../core/Header'
 
 
 const useStyles = makeStyles(theme => ({
@@ -77,6 +78,7 @@ export default function Shop(){
     
     return (
         <Card className={classes.page_container}>
+            <Header/>
             {shop.map((item, i) => {
                 return <div key={"item_key_" + i}>
                     <Card className={classes.shop_item_card}>

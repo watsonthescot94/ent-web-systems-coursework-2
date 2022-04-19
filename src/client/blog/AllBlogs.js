@@ -51,6 +51,10 @@ export default function Blogs(){
         }
       })
 
+    const redirectTo = blog => event => {
+        window.location.href="/blogs/" + blog;
+    }
+
     return (
         <Card className={classes.page_container}>
             <Header />
@@ -68,7 +72,7 @@ export default function Blogs(){
               >
                 {all_posts.map((post => {
                   return <Link to={"/blogs/" + post._id} className={classes.post_title}>
-                          <ListItem button>
+                          <ListItem button onclick={redirectTo(post._id)}>
                             <ListItemText primary={post.content.title} />
                           </ListItem>
                         </Link>
