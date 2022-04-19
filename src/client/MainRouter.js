@@ -3,6 +3,7 @@ import {Route, Switch} from 'react-router-dom'
 import Blogs from './blog/Blogs'
 import Home from './core/Home'
 import Register from './user/Register'
+import Login from './auth/LogIn'
 
 const MainRouter = () => {
     return (<div>
@@ -10,6 +11,7 @@ const MainRouter = () => {
         <Route exact path="/" component={Home}/>
         <Route path="/blogs/:blog_id" component={Blogs}/>
         <Route path='/register' component={Register}/>
+        <Route path='/login' component={Login}/>
       </Switch>
     </div>)
 }

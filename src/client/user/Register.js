@@ -69,7 +69,7 @@ export default function Register() {
             email: user_input.email || undefined,
             password: user_input.password || undefined
         }
-        
+
         create(new_user).then((data) => {
             if (data.error) {
                 setInput({ ...user_input, error: data.error });
@@ -80,8 +80,8 @@ export default function Register() {
         })
     }
 
-    const signInRedirect = () => {
-        window.href="/signin";
+    const logInRedirect = () => {
+        window.location.href="/login";
     }
 
     return (
@@ -141,7 +141,7 @@ export default function Register() {
                     </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={signInRedirect}>
+                        <Button onClick={logInRedirect}>
                             Sign In
                         </Button>
                     </DialogActions>

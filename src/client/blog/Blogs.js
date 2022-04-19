@@ -151,10 +151,10 @@ function createLikeTracker(comments) {
 }
 
 /**
- * Method for redirecting the user to the sign in page
+ * Method for redirecting the user to the login page
  */
-function signInRedirect() {
-  window.location.href = "/signin";
+function logInRedirect() {
+  window.location.href = "/login";
 }
 
 /**
@@ -460,8 +460,8 @@ export default function Blogs({match}){
       handleSetBlogPost();
     }
     else {
-      setDialogTitle("Sign In");
-      setDialogDescription("You must be signed in to like/dislike comments");
+      setDialogTitle("Log In");
+      setDialogDescription("You must be logged in to like/dislike comments");
       setDialogOpen(true);
     }
   }
@@ -1006,8 +1006,8 @@ export default function Blogs({match}){
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={signInRedirect}>
-                Sign In
+              <Button onClick={logInRedirect}>
+                Login
               </Button>
               <Button onClick={handleDialogClose}>
                 Cancel
