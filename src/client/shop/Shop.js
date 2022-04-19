@@ -61,7 +61,12 @@ export default function Shop(){
     })
 
     const handleAddToCartClick = id => event => {
-        addToCart({ user_id: current_user.id, item_id: id }, { t: jwt.token }).then((data) => {
+        var data = {
+            current_user: current_user,
+            item_id: id
+        }
+
+        addToCart(data, { t: jwt.token }).then((data) => {
             if (data && data.error) {
                 console.log(data.error);
               } else {

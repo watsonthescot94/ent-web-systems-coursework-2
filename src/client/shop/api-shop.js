@@ -12,7 +12,7 @@ const listAll = async (signal) => {
 
 const addToCart = async (data, credentials) => {
     try {
-      let response = await fetch('/api/addtocart/' + data.user_id, {
+      let response = await fetch('/api/addtocart/' + data.current_user.id, {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
