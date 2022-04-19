@@ -3,7 +3,7 @@ import {Route, Switch} from 'react-router-dom'
 import Blogs from './blog/Blogs'
 import Home from './core/Home'
 import Register from './user/Register'
-import Login from './auth/LogIn'
+import Login from './auth/Login'
 
 const MainRouter = () => {
     return (<div>
