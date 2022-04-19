@@ -691,7 +691,7 @@ export default function Blogs({match}){
                               <ThumbDown/>
                             </IconButton>
                             <Button variant="contained" onClick={handleReplyButtonClick(tier_0_comment.comment_id)}>REPLY</Button>
-                            { current_user.logged_in && current_user.id == tier_0_comment.author.id && (
+                            { current_user.logged_in && current_user.id == tier_0_comment.author.user_id && (
                               <span>
                                 <Button variant="contained" className={classes.bottom_button} onClick={handleEditCommentClick(tier_0_comment.comment_id)}>EDIT</Button>
                                 <Button variant="contained" onClick={handleDeleteComment(tier_0_comment.comment_id)}>DELETE</Button>
@@ -794,7 +794,7 @@ export default function Blogs({match}){
                                   <ThumbDown/>
                                 </IconButton>
                                   <Button variant="contained" onClick={handleReplyButtonClick(tier_1_comment.comment_id)}>REPLY</Button>
-                                  { current_user.logged_in && current_user.id == tier_1_comment.author.id && (
+                                  { current_user.logged_in && current_user.id == tier_1_comment.author.user_id && (
                                     <span>
                                       <Button variant="contained" className={classes.bottom_button} onClick={handleEditCommentClick(tier_1_comment.comment_id)}>EDIT</Button>
                                       <Button variant="contained" onClick={handleDeleteComment(tier_1_comment.comment_id)}>DELETE</Button>
@@ -899,7 +899,7 @@ export default function Blogs({match}){
                                       <ThumbDown/>
                                     </IconButton>
                                     <Button variant="contained" onClick={handleReplyButtonClick(tier_2_comment.comment_id)}>REPLY</Button>
-                                    { current_user.logged_in && current_user.id == tier_2_comment.author.id && (
+                                    { current_user.logged_in && current_user.id == tier_2_comment.author.user_id && (
                                       <span>
                                         <Button variant="contained" className={classes.bottom_button} onClick={handleEditCommentClick(tier_2_comment.comment_id)}>EDIT</Button>
                                         <Button variant="contained" onClick={handleDeleteComment(tier_2_comment.comment_id)}>DELETE</Button>
