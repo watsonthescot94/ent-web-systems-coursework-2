@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import {listAll, read} from './api-blog'
+import {listAll, read, update} from './api-blog'
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
@@ -339,6 +339,8 @@ export default function Blogs({match}){
     console.log("auth.isAuthenticated().user returend false");
   }
 
+  const jwt = auth.isAuthenticated()
+
   const [blog_post, setBlogPost] = useState({ "content": {}, "comments": []});
   const [most_recent_posts, setMostRecentPosts] = useState([]);
 
@@ -560,6 +562,19 @@ export default function Blogs({match}){
         document.getElementById("write_reply_card_" + id).style.display = "none";
 
         handleSetBlogPost();
+
+        var data = {
+          current_user: current_user,
+          blog: blog_post
+        }
+
+        update(data, { t: jwt.token }).then((data) => {
+          if (data && data.error) {
+            console.log("Update error:" + data.error);
+          } else {
+            console.log("Update success");
+          }
+        })
       }
     }
   }

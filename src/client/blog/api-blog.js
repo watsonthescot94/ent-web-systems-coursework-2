@@ -22,7 +22,25 @@ const read = async (params, signal) => {
     }
 }
 
+const update = async (data, credentials) => {
+  try {
+    let response = await fetch('/api/blogs/' + data.blog._id, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+      },
+      body: JSON.stringify(data)
+    })
+    return await response.json()
+  } catch(err) {
+    console.log(err)
+  }
+}
+
 export {
     listAll,
-    read
+    read,
+    update
 }

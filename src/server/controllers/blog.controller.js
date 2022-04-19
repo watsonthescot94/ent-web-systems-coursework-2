@@ -1,4 +1,6 @@
 import BlogPost from '../models/blog_post.model.js'
+import extend from 'lodash/extend'
+import errorHandler from './../helpers/dbErrorHandler'
 
 const listAll = async (req, res) => {
     try {
@@ -29,10 +31,24 @@ const blogPostByID = async (req, res, next, id) => {
 
 const read = (req, res) => {
     return res.json(req.post)
+}
+
+const update = async (req, res) => {
+  try {
+    let blog = req.post;
+    blog = extend(blog, req.body.blog)
+    await blog.save()
+    res.json(blog)
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err)
+    })
   }
+}
 
   export default {
       listAll,
       blogPostByID,
-      read
+      read,
+      update
   }

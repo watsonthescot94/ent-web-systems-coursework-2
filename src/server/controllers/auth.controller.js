@@ -44,6 +44,24 @@ const login = async (req, res) => {
     }
 }
 
+const requireSignIn = expressJwt({
+    secret: config.jwtSecret,
+    userProperty: 'auth',
+    algorithms: ['HS256']
+  })
+
+const hasAuthorization = (req, res, next) => {
+    const authorized = req.body.current_user && req.auth && req.body.current_user.id == req.auth._id
+    if (!(authorized)) {
+      return res.status('403').json({
+        error: "User is not authorized"
+      })
+    }
+    next()
+  }
+
 export default {
-    login
+    login,
+    hasAuthorization,
+    requireSignIn
 }
