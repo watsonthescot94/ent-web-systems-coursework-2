@@ -35,9 +35,11 @@ const read = (req, res) => {
 
 const update = async (req, res) => {
   try {
+    console.log("update() executing");
     let blog = req.post;
 
     if (req.body.hasOwnProperty("changeLike")) {
+      console.log("req.body.hasOwnProperty(changelike)");
       for (const tier_0_i in req.body.blog.comments) {
         if (req.body.blog.comments[tier_0_i].comment_id == req.like_comment_id) {
           req.body.blog.comments[tier_0_i].likes += req.body.changeLike;
@@ -67,6 +69,8 @@ const update = async (req, res) => {
     await blog.save()
     res.json(blog)
   } catch (err) {
+    console.log("Error:");
+    console.log(err);
     return res.status(400).json({
       error: errorHandler.getErrorMessage(err)
     })
