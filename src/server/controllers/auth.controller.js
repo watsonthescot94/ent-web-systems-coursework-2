@@ -52,10 +52,6 @@ const requireSignIn = expressJwt({
   })
 
 const hasAuthorization = (req, res, next) => {
-    console.log("req.body.current_user:");
-    console.log(req.body.current_user);
-    console.log("req.auth:");
-    console.log(req.auth);
     const authorized = req.body.current_user && req.auth && req.body.current_user.id == req.auth._id
     if (!(authorized)) {
       return res.status('403').json({

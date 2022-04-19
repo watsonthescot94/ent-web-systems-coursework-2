@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 import crypto from 'crypto'
+import { fromString } from 'uuidv4'
+import TouchRipple from '@material-ui/core/ButtonBase/TouchRipple'
 
 const UserSchema = new mongoose.Schema({
     email: {
@@ -29,6 +31,17 @@ const UserSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: "default_avatar.jpg"
+    },
+    cart: {
+        type:
+        [
+            {
+                item_id: {
+                    type: String,
+                    trim: true
+                }
+            }
+        ]
     },
     salt: String,
     updated: Date,

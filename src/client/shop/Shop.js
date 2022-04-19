@@ -1,12 +1,13 @@
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
-import CardActions from '@material-ui/core/Card'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import {makeStyles} from '@material-ui/core/styles'
 import React, { useEffect, useState } from 'react'
 import { listAll } from './api-shop'
+import { addToCart } from './api-shop'
+import auth from '../auth/auth-helper'
 
 
 const useStyles = makeStyles(theme => ({
@@ -17,14 +18,26 @@ const useStyles = makeStyles(theme => ({
     },
     shop_item_card: {
         width: "60%",
-        margin: "10px",
+        margin: "10px auto 10px",
         padding: "10px",
         boxSizing: "border-box"
+    },
+    add_to_cart_button: {
+        marginTop: "10px"
     }
 }))
 
 export default function Shop(){
     const classes = useStyles();
+
+    var current_user = {
+        logged_in: false
+      }
+    
+      if (auth.isAuthenticated().user) {
+        current_user.logged_in = true;
+        current_user.id = auth.isAuthenticated().user._id;
+      }
 
     const [shop, setShop] = useState([]);
 
@@ -41,6 +54,16 @@ export default function Shop(){
               }
         })
     })
+
+    const handleAddToCartClick = id => {
+        addToCart({ user_id: current_user.id, item_id: id }, { t: jwt.token }).then((data) => {
+            if (data && data.error) {
+                console.log(data.error);
+              } else {
+                console.log("add to cart success");
+              }
+        })
+    }
     
     return (
         <Card className={classes.page_container}>
@@ -67,10 +90,10 @@ export default function Shop(){
                             <Typography variant="body1">Out of Stock</Typography>
                         )}
                         {item.stock > 0 && (
-                            <Button variant="contained">Add to Cart</Button>
+                            <Button variant="contained" className={classes.add_to_cart_button} onClick={handleAddToCartClick(item._id)}>Add to Cart</Button>
                         )}
                         {item.stock == 0 && (
-                            <Button variant="contained" disabled={true}>Add to Cart</Button>
+                            <Button variant="contained" className={classes.add_to_cart_button} disabled={true}>Add to Cart</Button>
                         )}
                         </CardContent>
                     </Card>

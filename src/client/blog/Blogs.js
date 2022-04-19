@@ -356,7 +356,6 @@ export default function Blogs({match}){
         createLikeTracker(data.comments)
         document.title = data.content.title + " | Love for the Uglies";
       }
-      rendered = true;
     })
 
     listAll(signal).then((data) => {

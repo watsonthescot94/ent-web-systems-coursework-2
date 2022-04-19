@@ -12,6 +12,19 @@ const listAll = async (req, res) => {
     }
 }
 
+const addToCart = async (req, res) => {
+    try {
+        req.user.cart.push({ "item_id": req.item_id})
+        await req.user.save()
+        res.json(user)
+    } catch (err) {
+        return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+    })
+  }
+}
+
 export default {
-    listAll
+    listAll,
+    addToCart
 }
