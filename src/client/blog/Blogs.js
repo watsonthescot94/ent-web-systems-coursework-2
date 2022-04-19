@@ -521,6 +521,7 @@ export default function Blogs({match}){
               "user_id": blog_post.comments[tier_0_i].author.user_id,
               "username": blog_post.comments[tier_0_i].author.username
             }
+            console.log(new_comment.replying_to);
             blog_post.comments[tier_0_i].replies.push(new_comment);
             break;
           }
@@ -532,6 +533,7 @@ export default function Blogs({match}){
                   "user_id": blog_post.comments[tier_1_i].author.user_id,
                   "username": blog_post.comments[tier_1_i].author.username
                 }
+                console.log(new_comment.replying_to);
                 blog_post.comments[tier_0_i].replies[tier_1_i].replies.push(new_comment);
                 break;
               }
@@ -542,6 +544,7 @@ export default function Blogs({match}){
                       "user_id": blog_post.comments[tier_2_i].author.user_id,
                       "username": blog_post.comments[tier_2_i].author.username
                     }
+                    console.log(new_comment.replying_to);
                     blog_post.comments[tier_0_i].replies[tier_1_i].replies.push(new_comment);
                     break;
                   }
