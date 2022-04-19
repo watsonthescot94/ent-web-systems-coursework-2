@@ -28,6 +28,7 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogActions from '@material-ui/core/DialogActions'
 import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
+import auth from '../auth/auth-helper'
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -321,6 +322,23 @@ function findComment(comments, id) {
 
 export default function Blogs({match}){
   const classes = useStyles()
+
+  var current_user = {
+    logged_in: false
+  }
+
+  if (auth.isAuthenticated().user) {
+    current_user.logged_in = true;
+    current_user.id = auth.isAuthenticated().user._id;
+    current_user.username = auth.isAuthenticated().user.username;
+    current_user.avatar = auth.isAuthenticated().user.avatar;
+    console.log("Current user");
+    console.log(current_user);
+  }
+  else {
+    console.log("auth.isAuthenticated().user returend false");
+  }
+
   const [blog_post, setBlogPost] = useState({ "content": {}, "comments": []});
   const [most_recent_posts, setMostRecentPosts] = useState([]);
 
@@ -331,6 +349,7 @@ export default function Blogs({match}){
     read({ blog_id: match.params.blog_id }, signal).then((data) => {
       if (data && data.error) {
         console.log(data.error);
+        document.title = "Error | Love for the Uglies"
       } else {
         setBlogPost(data);
         createLikeTracker(data.comments)
@@ -390,11 +409,6 @@ export default function Blogs({match}){
 
     handleSetBlogPost();
   }
-
-  var logged_in = true;
-  var current_user_username = "ben_ten";
-  var current_user_id = "1493504";
-  var current_user_avatar = "avatar_3.jpg";
 
   const handleLikeClick = (id, like) => event => {
     console.log("like: " + like);
@@ -980,7 +994,7 @@ export default function Blogs({match}){
                 }
               >
                 {most_recent_posts.map((recent_post => {
-                  return <Link to={"/blogs/" + recent_post.blog_id} className={classes.recent_post_title}>
+                  return <Link to={"/blogs/" + recent_post._id} className={classes.recent_post_title}>
                           <ListItem button>
                             <ListItemText primary={recent_post.content.title} />
                           </ListItem>

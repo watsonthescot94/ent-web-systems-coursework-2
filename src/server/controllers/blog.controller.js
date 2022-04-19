@@ -13,7 +13,7 @@ const listAll = async (req, res) => {
 
 const blogPostByID = async (req, res, next, id) => {
     try {
-      let post = await BlogPost.findOne({blog_id: id})
+      let post = await BlogPost.findOne({_id: id})
       if (!post)
         return res.status('400').json({
           error: "Post not found"
