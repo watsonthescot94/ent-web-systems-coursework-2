@@ -4,6 +4,7 @@ import Blogs from './blog/Blogs'
 import Home from './core/Home'
 import Register from './user/Register'
 import Login from './auth/Login'
+import Shop from './shop/Shop'
 
 const MainRouter = () => {
     return (<div>
@@ -12,6 +13,7 @@ const MainRouter = () => {
         <Route path="/blogs/:blog_id" component={Blogs}/>
         <Route path='/register' component={Register}/>
         <Route path='/login' component={Login}/>
+        <Route path='/shop' component={Shop}/>
       </Switch>
     </div>)
 }
