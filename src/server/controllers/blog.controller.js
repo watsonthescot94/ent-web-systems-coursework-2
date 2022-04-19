@@ -37,8 +37,11 @@ const update = async (req, res) => {
   try {
     console.log("update() executing");
     let blog = req.post;
+    blog = extend(blog, req.body.blog)
+    await blog.update()
+    res.json(blog)
 
-    if (req.body.hasOwnProperty("changeLike")) {
+    /*if (req.body.hasOwnProperty("changeLike")) {
       console.log("req.body.hasOwnProperty(changelike)");
       for (const tier_0_i in req.body.blog.comments) {
         if (req.body.blog.comments[tier_0_i].comment_id == req.like_comment_id) {
@@ -59,15 +62,11 @@ const update = async (req, res) => {
           }
         }
       } 
-    }
+    }*/
 
     console.log("req.body.blog:");
     console.log(req.body.blog);
 
-    blog = extend(blog, req.body.blog)
-
-    await blog.update()
-    res.json(blog)
   } catch (err) {
     console.log("Error:");
     console.log(err);
