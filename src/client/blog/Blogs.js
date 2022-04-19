@@ -610,7 +610,18 @@ export default function Blogs({match}){
 
     handleSetBlogPost();
 
+    var blog_user_data = {
+      current_user: current_user,
+      blog: blog_post
+    }
 
+    update(blog_user_data, { t: jwt.token }).then((data) => {
+      if (data && data.error) {
+        console.log("Update error:" + data.error);
+      } else {
+        console.log("Update success");
+      }
+    })
   }
 
   const handleCommentInputTextChange = id => event => {
