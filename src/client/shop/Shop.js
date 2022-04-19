@@ -53,36 +53,34 @@ export default function Shop(){
     ]
     return (
         <div className={classes.shop_items_container}>
-            {shop.map((item, i) => {
                 <Card className={classes.shop_item_card}>
                 <CardMedia
                   component="img"
-                  image={"/assets/images/shop/" + item.image}
-                  alt={item.image}
+                  image={"/assets/images/shop/" + shop[0].image}
+                  alt={shop[0].image}
                 />
                 <CardContent>
-                  <Typography variant="h5">{item.name}</Typography>
-                  <Typography variant="body1">{item.description}</Typography>
-                  {item.stock <= 5 && (
-                      <Typography variant="body1">Only {item.stock} Left in Stock!</Typography>
+                  <Typography variant="h5">{shop[0].name}</Typography>
+                  <Typography variant="body1">{shop[0].description}</Typography>
+                  {shop[0].stock <= 5 && (
+                      <Typography variant="body1">Only {shop[0].stock} Left in Stock!</Typography>
                   )}
-                  {item.stock > 5 && (
+                  {shop[0].stock > 5 && (
                       <Typography variant="body1">In Stock</Typography>
                   )}
-                  {item.stock == 0 && (
+                  {shop[0].stock == 0 && (
                       <Typography variant="body1">Out of Stock</Typography>
                   )}
                 </CardContent>
                 <CardActions>
-                    {item.stock > 0 && (
+                    {shop[0].stock > 0 && (
                         <Button variant="contained">Add to Cart</Button>
                     )}
-                    {item.stock == 0 && (
+                    {shop[0].stock == 0 && (
                         <Button variant="contained" disabled={true}>Add to Cart</Button>
                     )}
                 </CardActions>
               </Card>
-            })}
         </div>
     )
 }
