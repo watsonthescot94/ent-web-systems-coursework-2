@@ -343,6 +343,8 @@ export default function Blogs({match}){
   const [blog_post, setBlogPost] = useState({ "content": {}, "comments": []});
   const [most_recent_posts, setMostRecentPosts] = useState([]);
 
+  const [post_not_found_dialog_open, setPostNotFoundDialogOpen] = useState(false);
+
   useEffect(() => {
     const abortController = new AbortController()
     const signal = abortController.signal
@@ -351,6 +353,7 @@ export default function Blogs({match}){
       if (data && data.error) {
         console.log(data.error);
         document.title = "Error | Love for the Uglies"
+        setPostNotFoundDialogOpen(true);
       } else {
         setBlogPost(data);
         createLikeTracker(data.comments)
@@ -1170,6 +1173,25 @@ export default function Blogs({match}){
                 Cancel
               </Button>
             </DialogActions>
+          </Dialog>
+
+          <Dialog
+              open={post_not_found_dialog_open}
+              disableBackdropClick={true}
+              aria-labelledby="alert_dialog_title"
+              aria-describedby="alert_dialog_description"
+          >
+              <DialogTitle id="alert_dialog_title">Post Not Found</DialogTitle>
+              <DialogContent>
+              <DialogContentText id="alert_dialog_description">
+                  Requested post was not found
+              </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                  <Button onClick={homeRedirect}>
+                      Home
+                  </Button>
+              </DialogActions>
           </Dialog>
 
           <Snackbar
