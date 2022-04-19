@@ -469,9 +469,6 @@ export default function Blogs({match}){
       }
 
       var comment = findComment(blog_post.comments, id);
-      console.log("Found comment:");
-      console.log(comment);
-      comment.likes += changeLike;
 
       var blog_user_data = {
         current_user: current_user,
@@ -486,7 +483,8 @@ export default function Blogs({match}){
         } else {
           console.log("Update success");
         }
-        
+
+        comment.likes += changeLike;
         handleSetBlogPost();
       })
     }
