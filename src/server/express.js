@@ -9,6 +9,7 @@ import Template from './../template'
 import blogRoutes from './routes/blog.routes'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
+import shopRoutes from './routes/shop.routes'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import MainRouter from './../client/MainRouter'
@@ -33,6 +34,7 @@ app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')))
 app.use('/', blogRoutes)
 app.use('/', userRoutes)
 app.use('/', authRoutes)
+app.use('/', shopRoutes)
 
 app.get('*', (req, res) => {
   const sheets = new ServerStyleSheets()
