@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import { Redirect } from 'react-router-dom'
 import { login } from './api-auth'
 import auth from './auth-helper'
+import Header from '../core/Header'
 
 const useStyles = makeStyles(theme => ({
     page_container: {
@@ -88,6 +89,7 @@ export default function Login(props) {
 
     return (
         <Card className={classes.page_container}>
+            <Header/>
             <div className={classes.page_content_container}>
 
                 <Card className={classes.login_form}>

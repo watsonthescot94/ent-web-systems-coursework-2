@@ -11,6 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogActions from '@material-ui/core/DialogActions'
 import { create } from './api-user'
+import Header from '../core/Header'
 
 const useStyles = makeStyles(theme => ({
     page_container: {
@@ -86,6 +87,7 @@ export default function Register() {
 
     return (
         <Card className={classes.page_container}>
+            <Header/>
             <div className={classes.page_content_container}>
 
                 <Card className={classes.register_form}>
