@@ -30,6 +30,7 @@ import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
 import auth from '../auth/auth-helper'
 import Header from '../core/Header'
+import Snackbar from '@material-ui/core/Snackbar'
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -321,8 +322,6 @@ function findComment(comments, id) {
   return -1
 }
 
-var rendered = false;
-
 export default function Blogs({match}){
   const classes = useStyles()
 
@@ -383,6 +382,12 @@ export default function Blogs({match}){
   const [dialog_title, setDialogTitle] = useState("");
   const handleDialogClose = () => {
     setDialogOpen(false);
+  }
+
+  const [snackbar_open, set_snackbar_open] = useState(false);
+  const [snackbar_message, set_snackbar_message] = useState("");
+  const handleSnackbarClose = () => {
+    set_snackbar_open(false);
   }
 
   const [sort_comments_value, setSortCommentsValue] = useState("most liked - least liked");
@@ -500,29 +505,26 @@ export default function Blogs({match}){
     document.getElementById("reply_input_" + id).focus();
   }
 
-  const handleReplyTextChange = id => event => {
-    document.getElementById("reply_length_counter_" + id).innerHTML = event.target.value.length + "/" + comment_max_length;
-  }
-
   const handleCancelReplyClick = id => event => {
     document.getElementById("write_reply_card_" + id).style.display = "none";
   }
 
   const handleSubmitReplyClick = id => event => {
     event.stopPropagation();
-    const comment_text = document.getElementById("reply_input_" + id).value.trim().replace(/(<([^>]+)>)/gi, "");
+    if (auth.isAuthenticated()) {
+      const comment_text = document.getElementById("reply_input_" + id).value.trim().replace(/(<([^>]+)>)/gi, "");
 
-    var new_comment = {
-      "comment_id": uuidv4(),
-        "author": {
-          "user_id": current_user.id,
-          "username": current_user.username,
-        },
-        "text": comment_text,
-        "posting_time": Date.now(),
-        "avatar": current_user.avatar,
-        "likes": 0
-    }
+      var new_comment = {
+        "comment_id": uuidv4(),
+          "author": {
+            "user_id": current_user.id,
+            "username": current_user.username,
+          },
+          "text": comment_text,
+          "posting_time": Date.now(),
+          "avatar": current_user.avatar,
+          "likes": 0
+      }
 
       if (comment_text.length > 0) {
         for (const tier_0_i in blog_post.comments) {
@@ -583,21 +585,36 @@ export default function Blogs({match}){
           if (data && data.error) {
             console.log("Update error:" + data.error);
           } else {
-            console.log("Update success");
+            set_snackbar_message("Comment posted");
+            set_snackbar_open(true);
           }
         })
       }
+    }
+    else {
+      setDialogTitle("Login");
+      setDialogDescription("You need to be logged in to comment");
+      setDialogOpen(true);
+    }
   }
   
   const handleEditCommentClick = id => event => {
-    var comment_text = findComment(blog_post.comments, id).text;
-    document.getElementById("edit_comment_card_" + id).style.display = "inline-block";
-    document.getElementById("comment_" + id).style.display = "none";
-    document.getElementById("edit_comment_input_" + id).value = comment_text;
-    document.getElementById("edit_comment_length_counter_" + id).innerHTML = comment_text.length + "/1000";
+    if (auth.isAuthenticated()) {
+      var comment_text = findComment(blog_post.comments, id).text;
+      document.getElementById("edit_comment_card_" + id).style.display = "inline-block";
+      document.getElementById("comment_" + id).style.display = "none";
+      document.getElementById("edit_comment_input_" + id).value = comment_text;
+      document.getElementById("edit_comment_length_counter_" + id).innerHTML = comment_text.length + "/1000";
+    }
+    else {
+      setDialogTitle("Login");
+      setDialogDescription("You need to be logged in to edit a comment");
+      setDialogOpen(true);
+    }
   }
   
   const handleDeleteComment = id => event => {
+    if (auth.isAuthenticated()) {
     for (const tier_0_i in blog_post.comments) {
       if (blog_post.comments[tier_0_i].comment_id == id) {
         blog_post.comments.splice(tier_0_i, 1);
@@ -632,9 +649,16 @@ export default function Blogs({match}){
       if (data && data.error) {
         console.log("Update error:" + data.error);
       } else {
-        console.log("Update success");
+        set_snackbar_message("Comment deleted");
+        set_snackbar_open(true);
       }
     })
+  }
+  else {
+    setDialogTitle("Login");
+    setDialogDescription("You need to be logged in to delete a comment");
+    setDialogOpen(true);
+  }
   }
 
   const handleCommentInputTextChange = id => event => {
@@ -642,27 +666,30 @@ export default function Blogs({match}){
   }
 
   const handleEditCommentSubmit = id => event => {
-    var comment = findComment(blog_post.comments, id);
-    var comment_text = document.getElementById("edit_comment_input_" + id).value.trim().replace(/(<([^>]+)>)/gi, "");
+    if (auth.isAuthenticated()) {
+      var comment = findComment(blog_post.comments, id);
+      var comment_text = document.getElementById("edit_comment_input_" + id).value.trim().replace(/(<([^>]+)>)/gi, "");
 
-    if (comment_text.length > 0) {
-      comment.text = comment_text;
-      document.getElementById("edit_comment_card_" + id).style.display = "none";
-      document.getElementById("comment_" + id).style.display = "inline-block";
-      handleSetBlogPost();
+      if (comment_text.length > 0) {
+        comment.text = comment_text;
+        document.getElementById("edit_comment_card_" + id).style.display = "none";
+        document.getElementById("comment_" + id).style.display = "inline-block";
+        handleSetBlogPost();
 
-      var blog_user_data = {
-        current_user: current_user,
-        blog: blog_post
-      }
-
-      update(blog_user_data, { t: jwt.token }).then((data) => {
-        if (data && data.error) {
-          console.log("Update error:" + data.error);
-        } else {
-          console.log("Update success");
+        var blog_user_data = {
+          current_user: current_user,
+          blog: blog_post
         }
-      })
+
+        update(blog_user_data, { t: jwt.token }).then((data) => {
+          if (data && data.error) {
+            console.log("Update error:" + data.error);
+          } else {
+            set_snackbar_message("Comment edited");
+            set_snackbar_open(true);
+          }
+        })
+      }
     }
   }
 
@@ -671,12 +698,46 @@ export default function Blogs({match}){
     document.getElementById("comment_" + id).style.display = "inline-block";
   }
 
+  const handleFirstCommentSubmit = event => {
+    if (auth.isAuthenticated()) {
+      var text = document.getElementById("first_comment_input").value.trim().replace(/(<([^>]+)>)/gi, "");
+      if (text.length > 0) {
+        var first_comment = {
+          "comment_id": uuidv4(),
+          "author": {
+            "user_id": current_user.id,
+            "username": current_user.username
+          },
+          "text": text,
+          "posting_time": Date.now(),
+          "replies": [],
+          "likes": 0,
+          "avatar": "avatar_1.jpg"
+        }
+
+        blog_post.replies.push(first_comment);
+        handleSetBlogPost();
+
+        update(blog_user_data, { t: jwt.token }).then((data) => {
+          if (data && data.error) {
+            console.log("Update error:" + data.error);
+          } else {
+            document.getElementById("first_comment_card").style.display = "none";
+            set_snackbar_message("Comment posted");
+            set_snackbar_open(true);
+          }
+        })
+      }
+    }
+  }
+
     return (
       <Card className={classes.page_container}>
         <Header />
 
         <div className={classes.page_content_container}>
           <div className={classes.blog_post_and_comments}>
+          
             <Card className={classes.blog_post}>
               <CardMedia
                 component="img"
@@ -714,6 +775,36 @@ export default function Blogs({match}){
                 </div>
 
                 <Card className={classes.comments}>
+
+                  { blog_post.comments.length == 0 && (
+                
+                    <Card id={"first_comment_card"} className={classes.tier_0}>
+                    <CardHeader
+                      title={<Typography variant="h6">Be the First to Comment</Typography>}
+                    />
+                    <CardContent>
+                      <FormControl variant="standard" fullWidth>
+                        <OutlinedInput
+                          id={"first_comment_input"}
+                          onChange={handleCommentInputTextChange("first_comment_length_counter" )}
+                          aria-describedby={"first_comment_length_counter"}
+                          multiline
+                          inputProps={{"maxLength":comment_max_length}}
+                          variant="outlined"
+                          maxRows={4}
+                        />
+                        <FormHelperText id={"first_comment_length_counter"}>
+                          0/1000
+                        </FormHelperText>
+                      </FormControl>
+                    </CardContent>
+                    <CardActions>
+                      <Button variant="contained" onClick={handleFirstCommentSubmit}>SEND</Button>
+                    </CardActions>
+                  </Card>
+
+                  )}
+
                     {blog_post.comments.map((tier_0_comment) => {
                       return <div className={classes.comment_and_replies} key={"key_" + tier_0_comment.comment_id}>
 
@@ -1080,6 +1171,14 @@ export default function Blogs({match}){
               </Button>
             </DialogActions>
           </Dialog>
+
+          <Snackbar
+            open={snackbar_open}
+            autoHideDuration={5000}
+            onClose={handleSnackbarClose}
+            message={snackbar_message}
+            anchorOrigin = {{vertical: 'bottom', horizontal: 'left'}}
+          />
 
       </Card>
     )
