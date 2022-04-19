@@ -72,7 +72,7 @@ export default function Blogs(){
               >
                 {all_posts.map((post => {
                   return <Link to={"/blogs/" + post._id} className={classes.post_title}>
-                          <ListItem button onClick={redirectTo(post._id)}>
+                          <ListItem button>
                             <ListItemText primary={post.content.title} />
                           </ListItem>
                         </Link>
