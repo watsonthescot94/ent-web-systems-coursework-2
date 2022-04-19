@@ -161,6 +161,13 @@ function logInRedirect() {
 }
 
 /**
+ * Method for redirecting the user to the homepage
+ */
+function homeRedirect() {
+  window.location.href = "/";
+}
+
+/**
  * Method for converting the blog posting date to a string
  * @param {*} time Posting date in milliseconds
  * @returns Blog posting date as a string
