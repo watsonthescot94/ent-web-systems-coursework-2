@@ -14,14 +14,10 @@ const useStyles = makeStyles(theme => ({
         width: "60%",
         backgroundColor: "blue",
         boxSizing: "border-box",
-        padding: "10px",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        flexWrap: "wrap"
+        padding: "10px"
     },
     shop_item_card: {
-        width: "40%",
+        width: "60%",
         margin: "10px",
         padding: "10px",
         boxSizing: "border-box"
@@ -77,14 +73,12 @@ export default function Shop(){
                         )}
                         </CardContent>
                         <CardActions>
-                            <span className={classes.add_to_cart_container}>
-                                {item.stock > 0 && (
-                                    <Button variant="contained">Add to Cart</Button>
-                                )}
-                                {item.stock == 0 && (
-                                    <Button variant="contained" disabled={true}>Add to Cart</Button>
-                                )}
-                            </span>
+                            {item.stock > 0 && (
+                                <Button variant="contained">Add to Cart</Button>
+                            )}
+                            {item.stock == 0 && (
+                                <Button variant="contained" disabled={true}>Add to Cart</Button>
+                            )}
                         </CardActions>
                     </Card>
                 </div>
