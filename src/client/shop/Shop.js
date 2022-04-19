@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Shop(){
     const classes = useStyles();
+    const jwt = auth.isAuthenticated()
 
     var current_user = {
         logged_in: false
