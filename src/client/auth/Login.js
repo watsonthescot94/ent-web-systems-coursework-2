@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function Login() {
+export default function Login(props) {
     var classes = useStyles();
 
     const [user_input, setInput] = useState({
@@ -74,10 +74,6 @@ export default function Login() {
                 })
             }
         })
-    }
-
-    const homepageRedirect = () => {
-        window.location.href="/";
     }
 
     const {from} = props.location.state || {
