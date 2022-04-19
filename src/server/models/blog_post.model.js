@@ -30,6 +30,16 @@ const Tier3CommentSchema = new mongoose.Schema({
     posting_time: {
         type: Number,
         trim: true
+    },
+    replying_to: {
+        user_id: {
+            type: String,
+            trim: true
+        },
+        username: {
+            type: String,
+            trim: true
+        }
     }
 })
 
@@ -66,6 +76,16 @@ const Tier2CommentSchema = new mongoose.Schema({
     },
     replies: {
         type: [Tier3CommentSchema]
+    },
+    replying_to: {
+        user_id: {
+            type: String,
+            trim: true
+        },
+        username: {
+            type: String,
+            trim: true
+        }
     }
 })
 
@@ -102,6 +122,16 @@ const Tier1CommentSchema = new mongoose.Schema({
     },
     replies: {
         type: [Tier2CommentSchema]
+    },
+    replying_to: {
+        user_id: {
+            type: String,
+            trim: true
+        },
+        username: {
+            type: String,
+            trim: true
+        }
     }
 })
 
