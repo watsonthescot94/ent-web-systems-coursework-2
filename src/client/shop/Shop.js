@@ -10,21 +10,16 @@ import { listAll } from './api-shop'
 
 
 const useStyles = makeStyles(theme => ({
-    shop_items_container: {
-        width: "60%",
-        backgroundColor: "blue",
-        boxSizing: "border-box",
-        padding: "10px"
+    page_container: {
+        width: "80%",
+        backgroundColor: "lightgray",
+        margin: "auto"
     },
     shop_item_card: {
         width: "60%",
         margin: "10px",
         padding: "10px",
         boxSizing: "border-box"
-    },
-    add_to_cart_container: {
-        display: "flex",
-        justifyContent: "right"
     }
 }))
 
@@ -48,14 +43,14 @@ export default function Shop(){
     })
     
     return (
-        <div className={classes.shop_items_container}>
+        <Card className={classes.page_container}>
             {shop.map((item, i) => {
                 return <div key={"item_key_" + i}>
                     <Card className={classes.shop_item_card}>
                         <CardMedia
                         component="img"
                         image={"/assets/images/shop/" + item.image}
-                        alt={item.image}
+                        alt={item.name}
                         />
                         <CardContent>
                         <Typography variant="h5">{item.name}</Typography>
@@ -71,18 +66,16 @@ export default function Shop(){
                         {item.stock == 0 && (
                             <Typography variant="body1">Out of Stock</Typography>
                         )}
+                        {item.stock > 0 && (
+                            <Button variant="contained">Add to Cart</Button>
+                        )}
+                        {item.stock == 0 && (
+                            <Button variant="contained" disabled={true}>Add to Cart</Button>
+                        )}
                         </CardContent>
-                        <CardActions>
-                            {item.stock > 0 && (
-                                <Button variant="contained">Add to Cart</Button>
-                            )}
-                            {item.stock == 0 && (
-                                <Button variant="contained" disabled={true}>Add to Cart</Button>
-                            )}
-                        </CardActions>
                     </Card>
                 </div>
             })}
-        </div>
+        </Card>
     )
 }
