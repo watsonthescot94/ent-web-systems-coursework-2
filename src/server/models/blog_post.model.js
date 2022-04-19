@@ -10,7 +10,7 @@ const Tier3CommentSchema = new mongoose.Schema({
             type: String,
             trim: true
         },
-        user_username: {
+        username: {
             type: String,
             trim: true
         }
