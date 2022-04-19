@@ -62,7 +62,7 @@ export default function Blogs(){
             <div className={classes.all_posts_container}>
             <Card className={classes.list_container}>
                 {all_posts.map((post => {
-                  return <div><Link to={"/blogs" + post_id}>{post.title}</Link></div>
+                  return <div><Link to={"/blogs" + post._id}>{post.title}</Link></div>
                 }))}
             </Card>
           </div>
