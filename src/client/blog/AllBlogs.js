@@ -58,7 +58,7 @@ export default function Blogs(){
             <Card className={classes.list_container}>
               <List
                 component="nav"
-                aria-label="recent posts"
+                aria-label="posts"
                 subheader={
                   <ListSubheader component="div">
                     All Posts
@@ -66,7 +66,7 @@ export default function Blogs(){
                 }
               >
                 {all_posts.map((post => {
-                  return <Link to={"/blogs/" + recent_post._id} className={classes.post_title}>
+                  return <Link to={"/blogs/" + post._id} className={classes.post_title}>
                           <ListItem button>
                             <ListItemText primary={post.content.title} />
                           </ListItem>
