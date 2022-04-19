@@ -1,6 +1,7 @@
 import User from '../models/user.model'
 import jwt from 'jsonwebtoken'
 import config from './../../config/config'
+import expressJwt from 'express-jwt'
 
 const login = async (req, res) => {
   try {
