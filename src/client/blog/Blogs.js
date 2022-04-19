@@ -320,6 +320,8 @@ function findComment(comments, id) {
   return -1
 }
 
+var rendered = false;
+
 export default function Blogs({match}){
   const classes = useStyles()
 
@@ -335,15 +337,13 @@ export default function Blogs({match}){
     console.log("Current user");
     console.log(current_user);
   }
-  else {
-    console.log("auth.isAuthenticated().user returend false");
-  }
 
   const jwt = auth.isAuthenticated()
 
   const [blog_post, setBlogPost] = useState({ "content": {}, "comments": []});
   const [most_recent_posts, setMostRecentPosts] = useState([]);
 
+  if (!rendered) {
   useEffect(() => {
     const abortController = new AbortController()
     const signal = abortController.signal
@@ -357,6 +357,7 @@ export default function Blogs({match}){
         createLikeTracker(data.comments)
         document.title = data.content.title + " | Love for the Uglies";
       }
+      rendered = true;
     })
 
     listAll(signal).then((data) => {
@@ -372,6 +373,7 @@ export default function Blogs({match}){
       abortController.abort()
     }
   }, [match.params.blog_id])
+}
 
   const handleSetBlogPost = () => {
     console.log("handleSetBlogPost() fired");
