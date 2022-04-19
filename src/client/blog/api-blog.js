@@ -33,6 +33,8 @@ const update = async (data, credentials) => {
       },
       body: JSON.stringify(data)
     })
+    console.log("BODYYYYYYYYYY:");
+    console.log(body);
     return await response.json()
   } catch(err) {
     console.log(err)
