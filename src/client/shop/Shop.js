@@ -60,14 +60,14 @@ export default function Shop(){
           }
     })
 
-    const handleAddToCartClick = id => {
-        /*addToCart({ user_id: current_user.id, item_id: id }, { t: jwt.token }).then((data) => {
+    const handleAddToCartClick = id => event => {
+        addToCart({ user_id: current_user.id, item_id: id }, { t: jwt.token }).then((data) => {
             if (data && data.error) {
                 console.log(data.error);
               } else {
                 console.log("add to cart success");
               }
-        })*/
+        })
     }
     
     return (
