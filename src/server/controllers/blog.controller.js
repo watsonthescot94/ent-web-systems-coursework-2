@@ -37,7 +37,7 @@ const update = async (req, res) => {
   try {
     let blog = req.post;
     blog = extend(blog, req.body.blog)
-
+/** 
     if (req.body.hasOwnProperty("changeLike")) {
       for (const tier_0_i in blog.comments) {
         if (blog.comments[tier_0_i].comment_id == req.like_comment_id) {
@@ -59,8 +59,10 @@ const update = async (req, res) => {
         }
       }
     }
+    
 
     delete req.body.changeLike;
+    */
 
     await blog.save()
     res.json(blog)
