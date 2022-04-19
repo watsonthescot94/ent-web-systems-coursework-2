@@ -36,33 +36,30 @@ const read = (req, res) => {
 const update = async (req, res) => {
   try {
     let blog = req.post;
-    blog = extend(blog, req.body.blog)
-/** 
+
     if (req.body.hasOwnProperty("changeLike")) {
-      for (const tier_0_i in blog.comments) {
-        if (blog.comments[tier_0_i].comment_id == req.like_comment_id) {
-          blog.comments[tier_0_i].likes += req.body.changeLike;
+      for (const tier_0_i in req.body.blog.comments) {
+        if (req.body.blog.comments[tier_0_i].comment_id == req.like_comment_id) {
+          req.body.blog.comments[tier_0_i].likes += req.body.changeLike;
         }
         else {
-          for (const tier_1_i in blog.comments[tier_0_i].replies) {
-            if (blog.comments[tier_0_i].replies[tier_1_i].comment_id == req.like_comment_id) {
-              blog.comments[tier_0_i].replies[tier_1_i].likes += req.body.changeLike;
+          for (const tier_1_i in req.body.blog.comments[tier_0_i].replies) {
+            if (req.body.blog.comments[tier_0_i].replies[tier_1_i].comment_id == req.like_comment_id) {
+              req.body.blog.comments[tier_0_i].replies[tier_1_i].likes += req.body.changeLike;
             }
             else {
-              for (const tier_2_i in blog.comments[tier_0_i].replies[tier_1_i].replies) {
-                if (blog.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id == id) {
-                  blog.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].likes += req.body.changeLike;
+              for (const tier_2_i in req.body.blog.comments[tier_0_i].replies[tier_1_i].replies) {
+                if (req.body.blog.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id == like_comment_id) {
+                  req.body.blog.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].likes += req.body.changeLike;
                 }
               }
             }
           }
         }
-      }
+      } 
     }
-    
 
-    delete req.body.changeLike;
-    */
+    blog = extend(blog, req.body.blog)
 
     await blog.save()
     res.json(blog)
