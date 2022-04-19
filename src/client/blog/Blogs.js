@@ -29,6 +29,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
 import auth from '../auth/auth-helper'
+import Header from '../core/Header'
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -672,6 +673,7 @@ export default function Blogs({match}){
 
     return (
       <Card className={classes.page_container}>
+        <Header />
 
         <div className={classes.page_content_container}>
           <div className={classes.blog_post_and_comments}>

@@ -61,8 +61,16 @@ const hasAuthorization = (req, res, next) => {
     next()
   }
 
+const signout = (req, res) => {
+    res.clearCookie("t")
+      return res.status('200').json({
+        message: "signed out"
+      })
+  }
+
 export default {
     login,
     hasAuthorization,
-    requireSignIn
+    requireSignIn,
+    signout
 }
