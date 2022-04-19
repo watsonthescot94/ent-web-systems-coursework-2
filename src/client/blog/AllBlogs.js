@@ -61,24 +61,9 @@ export default function Blogs(){
 
             <div className={classes.all_posts_container}>
             <Card className={classes.list_container}>
-              <List
-                component="nav"
-                aria-label="posts"
-                subheader={
-                  <ListSubheader component="div">
-                    All Posts
-                  </ListSubheader>
-                }
-              >
                 {all_posts.map((post => {
-                  return <Link to={"/blogs/" + post._id} className={classes.post_title}>
-                          <ListItem button>
-                            <ListItemText primary={post.content.title} />
-                          </ListItem>
-                        </Link>
+                  return <div><Link to={"/blogs" + post_id}>{post.title}</Link></div>
                 }))}
-
-              </List>
             </Card>
           </div>
         </Card>
