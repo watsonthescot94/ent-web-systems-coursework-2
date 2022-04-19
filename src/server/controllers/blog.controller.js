@@ -66,7 +66,7 @@ const update = async (req, res) => {
 
     blog = extend(blog, req.body.blog)
 
-    await blog.save()
+    await blog.update()
     res.json(blog)
   } catch (err) {
     console.log("Error:");
