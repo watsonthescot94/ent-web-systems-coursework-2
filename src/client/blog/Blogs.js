@@ -347,19 +347,17 @@ export default function Blogs({match}){
     const abortController = new AbortController()
     const signal = abortController.signal
 
-    if (!rendered) {
-      read({ blog_id: match.params.blog_id }, signal).then((data) => {
-        if (data && data.error) {
-          console.log(data.error);
-          document.title = "Error | Love for the Uglies"
-        } else {
-          setBlogPost(data);
-          createLikeTracker(data.comments)
-          document.title = data.content.title + " | Love for the Uglies";
-        }
-        rendered = true;
-      })
-    }
+    read({ blog_id: match.params.blog_id }, signal).then((data) => {
+      if (data && data.error) {
+        console.log(data.error);
+        document.title = "Error | Love for the Uglies"
+      } else {
+        setBlogPost(data);
+        createLikeTracker(data.comments)
+        document.title = data.content.title + " | Love for the Uglies";
+      }
+      rendered = true;
+    })
 
     listAll(signal).then((data) => {
       if (data && data.error) {
@@ -611,6 +609,8 @@ export default function Blogs({match}){
     }
 
     handleSetBlogPost();
+
+
   }
 
   const handleCommentInputTextChange = id => event => {
@@ -626,6 +626,14 @@ export default function Blogs({match}){
       document.getElementById("edit_comment_card_" + id).style.display = "none";
       document.getElementById("comment_" + id).style.display = "inline-block";
       handleSetBlogPost();
+
+      update(data, { t: jwt.token }).then((data) => {
+        if (data && data.error) {
+          console.log("Update error:" + data.error);
+        } else {
+          console.log("Update success");
+        }
+      })
     }
   }
 
