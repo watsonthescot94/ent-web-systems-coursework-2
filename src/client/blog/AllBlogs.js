@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 import Header from '../core/Header'
-import listAll from './api-blog'
+import {listAll} from './api-blog'
 import React, { useEffect, useState } from 'react';
 import Card from '@material-ui/core/Card'
 import List from '@material-ui/core/List'
