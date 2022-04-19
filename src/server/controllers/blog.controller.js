@@ -38,7 +38,7 @@ const update = async (req, res) => {
     console.log("update() executing");
     let blog = req.post;
     blog = extend(blog, req.body.blog)
-    await blog.save()
+    await blog.updateOne()
     res.json(blog)
 
     /*if (req.body.hasOwnProperty("changeLike")) {
