@@ -26,6 +26,10 @@ const UserSchema = new mongoose.Schema({
         type: Boolean, 
         default: false
     },
+    avatar: {
+        type: String,
+        default: "default_avatar.jpg"
+    },
     salt: String,
     updated: Date,
     created: {
