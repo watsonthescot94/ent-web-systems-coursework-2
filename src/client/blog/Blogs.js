@@ -418,7 +418,7 @@ export default function Blogs({match}){
     console.log(like_tracker);
     let changeLike = like;
 
-    if (logged_in) {
+    if (current_user.logged_in) {
       var like_button = document.getElementById("like_button_" + id);
       var dislike_button = document.getElementById("dislike_button_" + id);
 
@@ -473,7 +473,22 @@ export default function Blogs({match}){
       console.log(comment);
       comment.likes += changeLike;
 
-      handleSetBlogPost();
+      var blog_user_data = {
+        current_user: current_user,
+        blog: blog_post,
+        changeLike: changeLike,
+        like_comment_id: comment.comment_id
+      }
+
+      update(blog_user_data, { t: jwt.token }).then((data) => {
+        if (data && data.error) {
+          console.log("Update error:" + data.error);
+        } else {
+          console.log("Update success");
+        }
+        
+        handleSetBlogPost();
+      })
     }
     else {
       setDialogTitle("Log In");
