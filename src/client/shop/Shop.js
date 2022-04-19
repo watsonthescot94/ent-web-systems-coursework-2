@@ -54,6 +54,10 @@ export default function Shop(){
                 setShop(data);
               }
         })
+
+        return function cleanup(){
+            abortController.abort()
+          }
     })
 
     const handleAddToCartClick = id => {
