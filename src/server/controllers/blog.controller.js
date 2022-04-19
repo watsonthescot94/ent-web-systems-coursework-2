@@ -59,6 +59,9 @@ const update = async (req, res) => {
       } 
     }
 
+    console.log("req.body.blog:");
+    console.log(req.body.blog);
+
     blog = extend(blog, req.body.blog)
 
     await blog.save()
