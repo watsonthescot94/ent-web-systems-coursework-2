@@ -51,7 +51,7 @@ const update = async (req, res) => {
             }
             else {
               for (const tier_2_i in req.body.blog.comments[tier_0_i].replies[tier_1_i].replies) {
-                if (req.body.blog.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id == like_comment_id) {
+                if (req.body.blog.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].comment_id == req.like_comment_id) {
                   req.body.blog.comments[tier_0_i].replies[tier_1_i].replies[tier_2_i].likes += req.body.changeLike;
                 }
               }
