@@ -13,9 +13,10 @@ const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         trim: true,
-        maxLength: 15,
+        maxLength: [15, "Username must be no longer than 15 characters"],
         unique: true,
-        required: "Username required"
+        required: "Username required",
+        match: [/^\S*$/, "Username must not contain spaces"]
     },
     hashed_password: {
         type: String,
