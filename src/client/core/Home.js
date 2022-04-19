@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core"
 import Card from '@material-ui/core/Card'
 import Typography from '@material-ui/core/Typography'
+import Header from '../core/Header'
 
 const useStyles = makeStyles(theme => ({
     page_container: {
